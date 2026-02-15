@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>js-cloudimage-before-after — Interactive Image Comparison Slider</title>
+  <link rel="icon" href="https://cdn.prod.website-files.com/623086c828f7c9787009cf20/6267d5ef7488f536294d267b_favicon-256x526.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./demo.css" />
+</head>
+<body>
+  <!-- Nav -->
+  <nav class="demo-nav" id="demo-nav">
+    <div class="demo-nav-inner">
+      <a href="https://www.scaleflex.com" class="demo-logo" target="_blank" rel="noopener">
+        <img src="https://assets.scaleflex.com/Marketing/Logos/Scaleflex%20Logos/Logo%20Horizontal/scaleflex%20logo%20without%20tagline%20white%20text%20%28horizontal%29%20.png?vh=85bc00" alt="Scaleflex" class="demo-logo-img">
+      </a>
+      <div class="demo-nav-links">
+        <a href="#hero" class="active">Demo</a>
+        <a href="#getting-started">Install</a>
+        <a href="#modes">Modes</a>
+        <a href="#orientations">Orientations</a>
+        <a href="#themes">Themes</a>
+        <a href="#zoom">Zoom</a>
+        <a href="#configurator">Configurator</a>
+      </div>
+      <a href="https://github.com/scaleflex/js-cloudimage-before-after" class="demo-nav-github" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      </a>
+      <button class="demo-nav-burger" id="nav-burger" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="hero" class="demo-section demo-hero">
+      <div class="demo-section-inner">
+        <div class="demo-hero-badge">Open Source Library</div>
+        <h1>js-cloudimage-<span class="demo-gradient-text">before-after</span></h1>
+        <p class="demo-subtitle">Interactive image comparison slider with zoom &amp; pan, drag/hover/click modes, and full accessibility. Zero dependencies, under 12 KB gzipped.</p>
+        <div class="demo-hero-actions">
+          <a href="#getting-started" class="demo-btn demo-btn--glow">
+            Get Started
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+          <a href="https://github.com/scaleflex/js-cloudimage-before-after" class="demo-btn demo-btn--glass" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <div id="hero-slider" class="demo-viewer demo-viewer--hero"></div>
+        <div class="demo-hero-meta">
+          <span>&lt;12 KB</span>
+          <span>Zero Dependencies</span>
+          <span>TypeScript</span>
+          <span>React</span>
+          <span>WCAG 2.1 AA</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Getting Started -->
+    <section id="getting-started" class="demo-section demo-section--alt">
+      <div class="demo-section-inner">
+        <div class="demo-section-header">
+          <div class="demo-section-label">Quick Start</div>
+          <h2>Up and running in under a minute</h2>
+          <p>Install from npm or load from CDN &mdash; choose the method that fits your workflow.</p>
+        </div>
+        <div class="demo-columns">
+          <div class="demo-column demo-card">
+            <div class="demo-feature-header">
+              <div class="demo-feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 16V7a2 2 0 00-2-2H6a2 2 0 00-2 2v9m16 0H4m16 0l1.28 2.55a1 1 0 01-.9 1.45H3.62a1 1 0 01-.9-1.45L4 16"/></svg>
+              </div>
+              <div class="demo-feature-title">Install via npm</div>
+            </div>
+            <div class="demo-code-wrap">
+              <pre><code class="language-bash">npm install js-cloudimage-before-after</code></pre>
+              <button class="demo-copy-btn" aria-label="Copy to clipboard">
+                <svg class="demo-copy-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                <svg class="demo-check-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+            </div>
+            <div class="demo-code-wrap">
+              <pre><code class="language-javascript">import CIBeforeAfter from 'js-cloudimage-before-after';
+
+new CIBeforeAfter('#my-slider', {
+  beforeSrc: '/before.jpg',
+  afterSrc: '/after.jpg',
+});</code></pre>
+              <button class="demo-copy-btn" aria-label="Copy to clipboard">
+                <svg class="demo-copy-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                <svg class="demo-check-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="demo-column demo-card">
+            <div class="demo-feature-header">
+              <div class="demo-feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9"/></svg>
+              </div>
+              <div class="demo-feature-title">Use via CDN</div>
+            </div>
+            <div class="demo-code-wrap demo-code-wrap--fill">
+              <pre><code class="language-html">&lt;script src="https://cdn.scaleflex.it/plugins/js-cloudimage-before-after/1.0.0/js-cloudimage-before-after.min.js"&gt;&lt;/script&gt;
+
+&lt;div
+  data-ci-before-after-before-src="/before.jpg"
+  data-ci-before-after-after-src="/after.jpg"
+&gt;&lt;/div&gt;
+
+&lt;script&gt;CIBeforeAfter.autoInit();&lt;/script&gt;</code></pre>
+              <button class="demo-copy-btn" aria-label="Copy to clipboard">
+                <svg class="demo-copy-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                <svg class="demo-check-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interaction Modes -->
+    <section id="modes" class="demo-section">
+      <div class="demo-section-inner">
+        <div class="demo-section-header">
+          <div class="demo-section-label">Interactions</div>
+          <h2>Interaction Modes</h2>
+          <p>Choose how the slider responds: drag for precision, hover for preview, or click for quick comparison.</p>
+        </div>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3><span class="demo-card-icon">&#9994;</span> Drag</h3>
+            <p>Click and drag the handle to compare images.</p>
+            <div id="mode-drag" class="demo-viewer"></div>
+          </div>
+          <div class="demo-card">
+            <h3><span class="demo-card-icon">&#128065;</span> Hover</h3>
+            <p>Move the mouse over the image to reveal.</p>
+            <div id="mode-hover" class="demo-viewer"></div>
+          </div>
+          <div class="demo-card">
+            <h3><span class="demo-card-icon">&#128070;</span> Click</h3>
+            <p>Click anywhere to set the comparison point.</p>
+            <div id="mode-click" class="demo-viewer"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Orientations -->
+    <section id="orientations" class="demo-section demo-section--alt">
+      <div class="demo-section-inner">
+        <div class="demo-section-header">
+          <div class="demo-section-label">Layout</div>
+          <h2>Orientations</h2>
+          <p>Compare images side-by-side or top-to-bottom.</p>
+        </div>
+        <div class="demo-grid demo-grid--2">
+          <div class="demo-card">
+            <h3>Horizontal</h3>
+            <div id="orientation-horizontal" class="demo-viewer"></div>
+          </div>
+          <div class="demo-card">
+            <h3>Vertical</h3>
+            <div id="orientation-vertical" class="demo-viewer"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Themes -->
+    <section id="themes" class="demo-section">
+      <div class="demo-section-inner">
+        <div class="demo-section-header">
+          <div class="demo-section-label">Theming</div>
+          <h2>Light &amp; Dark Themes</h2>
+          <p>Built-in light and dark themes with full CSS custom property support.</p>
+        </div>
+        <div class="demo-grid demo-grid--2">
+          <div class="demo-card">
+            <h3>Light (Default)</h3>
+            <div id="theme-light" class="demo-viewer"></div>
+          </div>
+          <div class="demo-card">
+            <h3>Dark</h3>
+            <div id="theme-dark" class="demo-viewer"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Zoom & Pan -->
+    <section id="zoom" class="demo-section demo-section--alt">
+      <div class="demo-section-inner">
+        <div class="demo-section-header">
+          <div class="demo-section-label">Advanced</div>
+          <h2>Zoom &amp; Pan</h2>
+          <p>Hold <kbd>Ctrl</kbd> (or <kbd>&#8984;</kbd>) + scroll to zoom. Drag to pan when zoomed in.</p>
+        </div>
+        <div id="zoom-demo" class="demo-viewer" style="max-width: 800px; margin: 0 auto;"></div>
+      </div>
+    </section>
+
+    <!-- Interactive Configurator -->
+    <section id="configurator" class="demo-section">
+      <div class="demo-section-inner">
+        <div class="demo-section-header">
+          <div class="demo-section-label">Playground</div>
+          <h2>Interactive Configurator</h2>
+          <p>Toggle options and see the generated code update in real time.</p>
+        </div>
+        <div class="demo-configurator">
+          <div class="demo-configurator-panel demo-configurator-preview">
+            <h3>Preview</h3>
+            <div id="configurator-slider" class="demo-viewer"></div>
+          </div>
+          <div class="demo-configurator-panel">
+            <h3>Options</h3>
+            <div id="configurator-controls"></div>
+          </div>
+          <div class="demo-configurator-panel demo-configurator-code">
+            <h3>Generated Code</h3>
+            <div class="demo-code-wrap">
+              <pre id="cfg-code"><code id="generated-code" class="language-javascript"></code></pre>
+              <button id="copy-code-btn" class="demo-copy-btn" aria-label="Copy to clipboard">
+                <svg class="demo-copy-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                <svg class="demo-check-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Also by Scaleflex -->
+  <section class="demo-also" id="also-slider">
+    <div class="demo-also-slides">
+    <div class="demo-also-slide demo-also-slide--active" data-slide="0">
+      <div class="demo-also-inner">
+        <div class="demo-also-content">
+          <div class="demo-section-label">Also by Scaleflex</div>
+          <h3 class="demo-also-title">js-cloudimage-<span class="demo-gradient-text">hotspot</span></h3>
+          <p class="demo-also-desc">Add interactive hotspots to any image with zoom, popovers, and full accessibility. Zero dependencies, under 10 KB gzipped.</p>
+          <div class="demo-also-actions">
+            <a href="https://scaleflex.github.io/js-cloudimage-hotspot/" class="demo-btn demo-btn--primary demo-btn--small" target="_blank" rel="noopener">
+              Live Demo
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+            <a href="https://github.com/scaleflex/js-cloudimage-hotspot" class="demo-btn demo-btn--outline demo-btn--small" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+        <div class="demo-also-visual">
+          <svg viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="demo-also-icon">
+            <rect x="4" y="4" width="172" height="172" rx="8" stroke="url(#also-grad-0)" stroke-width="2" opacity="0.3"/>
+            <rect x="10" y="10" width="160" height="160" rx="4" stroke="url(#also-grad-0)" stroke-width="1" opacity="0.12"/>
+            <path d="M10 140 L40 110 L65 125 L100 85 L135 110 L170 90 L170 170 L10 170 Z" fill="url(#also-grad-0)" opacity="0.06"/>
+            <circle cx="45" cy="60" r="14" stroke="url(#also-grad-0)" stroke-width="1" opacity="0.15"><animate attributeName="r" values="14;18;14" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.15;0.05;0.15" dur="3s" repeatCount="indefinite"/></circle>
+            <circle cx="45" cy="60" r="8" fill="url(#also-grad-0)" opacity="0.6"/><circle cx="45" cy="60" r="3" fill="#fff" opacity="0.9"/>
+            <circle cx="110" cy="50" r="14" stroke="url(#also-grad-0)" stroke-width="1" opacity="0.15"><animate attributeName="r" values="14;18;14" dur="3s" begin="0.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.15;0.05;0.15" dur="3s" begin="0.5s" repeatCount="indefinite"/></circle>
+            <circle cx="110" cy="50" r="8" fill="url(#also-grad-0)" opacity="0.6"/><circle cx="110" cy="50" r="3" fill="#fff" opacity="0.9"/>
+            <circle cx="140" cy="90" r="14" stroke="url(#also-grad-0)" stroke-width="1" opacity="0.15"><animate attributeName="r" values="14;18;14" dur="3s" begin="1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.15;0.05;0.15" dur="3s" begin="1s" repeatCount="indefinite"/></circle>
+            <circle cx="140" cy="90" r="8" fill="url(#also-grad-0)" opacity="0.6"/><circle cx="140" cy="90" r="3" fill="#fff" opacity="0.9"/>
+            <rect x="120" y="14" width="50" height="20" rx="4" fill="url(#also-grad-0)" opacity="0.1" stroke="url(#also-grad-0)" stroke-width="1" stroke-opacity="0.25"/>
+            <line x1="128" y1="22" x2="158" y2="22" stroke="url(#also-grad-0)" stroke-width="2" opacity="0.25" stroke-linecap="round"/>
+            <line x1="128" y1="28" x2="148" y2="28" stroke="url(#also-grad-0)" stroke-width="1.5" opacity="0.15" stroke-linecap="round"/>
+            <defs><linearGradient id="also-grad-0" x1="0" y1="0" x2="180" y2="180"><stop stop-color="#2c99ff"/><stop offset="1" stop-color="#00d4aa"/></linearGradient></defs>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="demo-also-slide" data-slide="1">
+      <div class="demo-also-inner">
+        <div class="demo-also-content">
+          <div class="demo-section-label">Also by Scaleflex</div>
+          <h3 class="demo-also-title">js-cloudimage-<span class="demo-gradient-text">360-view</span></h3>
+          <p class="demo-also-desc">Interactive 360&deg; product views with drag, zoom, autoplay and hotspots. Perfect companion for e-commerce showcases.</p>
+          <div class="demo-also-actions">
+            <a href="https://scaleflex.github.io/js-cloudimage-360-view/" class="demo-btn demo-btn--primary demo-btn--small" target="_blank" rel="noopener">
+              Live Demo
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+            <a href="https://github.com/scaleflex/js-cloudimage-360-view" class="demo-btn demo-btn--outline demo-btn--small" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+        <div class="demo-also-visual">
+          <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="demo-also-icon demo-also-icon--spin">
+            <circle cx="60" cy="60" r="56" stroke="url(#also-grad-1)" stroke-width="2" opacity="0.3"/>
+            <circle cx="60" cy="60" r="40" stroke="url(#also-grad-1)" stroke-width="1.5" opacity="0.2"/>
+            <ellipse cx="60" cy="60" rx="56" ry="20" stroke="url(#also-grad-1)" stroke-width="2" opacity="0.5"/>
+            <path d="M60 4 L60 116" stroke="url(#also-grad-1)" stroke-width="1" opacity="0.15"/>
+            <circle cx="60" cy="60" r="4" fill="url(#also-grad-1)"/>
+            <path d="M75 55 L85 60 L75 65" stroke="url(#also-grad-1)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+            <path d="M45 55 L35 60 L45 65" stroke="url(#also-grad-1)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+            <defs><linearGradient id="also-grad-1" x1="0" y1="0" x2="120" y2="120"><stop stop-color="#2c99ff"/><stop offset="1" stop-color="#00d4aa"/></linearGradient></defs>
+          </svg>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="demo-also-dots" id="also-dots"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="demo-footer">
+    <div class="demo-footer-main">
+      <div class="demo-footer-brand">
+        <a href="https://www.scaleflex.com" target="_blank" rel="noopener">
+          <img src="https://assets.scaleflex.com/Marketing/Logos/Scaleflex%20Logos/Logo%20Horizontal/scaleflex%20logo%20without%20tagline%20white%20text%20%28horizontal%29%20.png?vh=85bc00" alt="Scaleflex" class="demo-footer-logo">
+        </a>
+        <p>Interactive image comparison slider for the modern web. Zero dependencies, fully accessible, endlessly customizable.</p>
+      </div>
+      <div class="demo-footer-col">
+        <h4>Resources</h4>
+        <a href="https://github.com/scaleflex/js-cloudimage-before-after" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.npmjs.com/package/js-cloudimage-before-after" target="_blank" rel="noopener">npm</a>
+        <a href="https://github.com/scaleflex/js-cloudimage-before-after/blob/main/README.md" target="_blank" rel="noopener">Documentation</a>
+      </div>
+      <div class="demo-footer-col">
+        <h4>Examples</h4>
+        <a href="https://codesandbox.io/p/devbox/github/scaleflex/js-cloudimage-before-after/tree/main/examples/vanilla" target="_blank" rel="noopener">Vanilla Sandbox</a>
+        <a href="https://codesandbox.io/p/devbox/github/scaleflex/js-cloudimage-before-after/tree/main/examples/react" target="_blank" rel="noopener">React Sandbox</a>
+      </div>
+      <div class="demo-footer-col">
+        <h4>Support</h4>
+        <a href="https://buymeacoffee.com/dzmitry.stramavus" class="demo-footer-coffee" target="_blank" rel="noopener">
+          <span class="demo-coffee-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 110 8h-1"/><path d="M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4V8z"/></svg>
+            <span class="demo-steam demo-steam--1"></span>
+            <span class="demo-steam demo-steam--2"></span>
+            <span class="demo-steam demo-steam--3"></span>
+          </span>
+          Buy Me a Coffee
+        </a>
+        <a href="https://github.com/scaleflex/js-cloudimage-before-after/issues" target="_blank" rel="noopener">Report an Issue</a>
+        <a href="mailto:hello@cloudimage.io">Contact Us</a>
+      </div>
+    </div>
+    <div class="demo-footer-bottom">
+      <p>MIT License &mdash; Made with care by the <a href="https://www.scaleflex.com" target="_blank" rel="noopener">Scaleflex</a> team &mdash; Powered by <a href="https://www.cloudimage.io" target="_blank" rel="noopener">Cloudimage.io</a></p>
+    </div>
+  </footer>
+
+  <script type="module" src="./demo.ts"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

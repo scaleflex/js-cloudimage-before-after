@@ -1,0 +1,69 @@
+{
+  "name": "js-cloudimage-before-after",
+  "version": "1.0.0",
+  "description": "Interactive before/after image comparison slider with zoom, labels, and accessibility",
+  "license": "MIT",
+  "author": "Scaleflex",
+  "main": "dist/js-cloudimage-before-after.cjs.js",
+  "module": "dist/js-cloudimage-before-after.esm.js",
+  "unpkg": "dist/js-cloudimage-before-after.min.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/js-cloudimage-before-after.esm.js",
+      "require": "./dist/js-cloudimage-before-after.cjs.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js",
+      "require": "./dist/react/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": ["**/*.css"],
+  "scripts": {
+    "dev": "vite --config config/vite.demo.config.ts",
+    "dev:react": "vite --config config/vite.react-demo.config.ts",
+    "build": "npm run build:bundle && npm run build:react && npm run typecheck:emit",
+    "build:bundle": "vite build --config config/vite.config.ts",
+    "build:react": "vite build --config config/vite.react.config.ts",
+    "build:demo": "vite build --config config/vite.demo.config.ts",
+    "typecheck": "tsc --noEmit",
+    "typecheck:emit": "tsc --project tsconfig.build.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.16.0",
+    "@typescript-eslint/parser": "^8.16.0",
+    "@vitest/coverage-v8": "^2.1.8",
+    "eslint": "^9.15.0",
+    "jsdom": "^25.0.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.3",
+    "vitest": "^2.1.8"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  }
+}
