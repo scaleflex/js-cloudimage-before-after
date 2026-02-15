@@ -1,0 +1,1202 @@
+const rt = ["drag", "hover", "click"], at = ["horizontal", "vertical"], lt = ["light", "dark"], ht = ["arrows", "circle", "line"], ct = ["top", "bottom"], ft = [
+  "top-left",
+  "top-center",
+  "top-right",
+  "bottom-left",
+  "bottom-center",
+  "bottom-right"
+], d = {
+  beforeAlt: "Before",
+  afterAlt: "After",
+  mode: "drag",
+  orientation: "horizontal",
+  initialPosition: 50,
+  zoom: !1,
+  zoomMax: 4,
+  zoomMin: 1,
+  theme: "light",
+  handleStyle: "arrows",
+  labelPosition: "top",
+  animateOnce: !0,
+  fullscreenButton: !0,
+  lazyLoad: !0,
+  zoomControls: !0,
+  zoomControlsPosition: "bottom-right",
+  scrollHint: !0,
+  keyboardStep: 1,
+  keyboardLargeStep: 10
+};
+function j(n) {
+  const t = n.labels;
+  let e = !0, i = "Before", o = "After";
+  t === !1 ? e = !1 : typeof t == "object" && (i = t.before ?? "Before", o = t.after ?? "After");
+  const s = n.animate;
+  let r = !1, l = 800, a = 0, h = "ease-out";
+  s === !0 ? r = !0 : typeof s == "object" && (r = !0, l = Math.max(0, s.duration ?? 800), a = Math.max(0, s.delay ?? 0), h = s.easing ?? "ease-out");
+  const c = n.zoom ?? d.zoom;
+  return {
+    beforeSrc: n.beforeSrc,
+    afterSrc: n.afterSrc,
+    beforeAlt: n.beforeAlt ?? d.beforeAlt,
+    afterAlt: n.afterAlt ?? d.afterAlt,
+    mode: y(n.mode, rt, d.mode, "mode"),
+    orientation: y(n.orientation, at, d.orientation, "orientation"),
+    initialPosition: gt(n.initialPosition ?? d.initialPosition),
+    zoom: c,
+    zoomMax: Math.max(1, n.zoomMax ?? d.zoomMax),
+    zoomMin: Math.max(1, Math.min(n.zoomMin ?? d.zoomMin, n.zoomMax ?? d.zoomMax)),
+    theme: y(n.theme, lt, d.theme, "theme"),
+    handleStyle: y(n.handleStyle, ht, d.handleStyle, "handleStyle"),
+    labelsEnabled: e,
+    labelBefore: i,
+    labelAfter: o,
+    labelPosition: y(n.labelPosition, ct, d.labelPosition, "labelPosition"),
+    animateEnabled: r,
+    animateDuration: l,
+    animateDelay: a,
+    animateEasing: h,
+    animateOnce: n.animateOnce ?? d.animateOnce,
+    fullscreenButton: n.fullscreenButton ?? d.fullscreenButton,
+    lazyLoad: n.lazyLoad ?? d.lazyLoad,
+    zoomControls: n.zoomControls ?? (c ? d.zoomControls : !1),
+    zoomControlsPosition: y(n.zoomControlsPosition, ft, d.zoomControlsPosition, "zoomControlsPosition"),
+    scrollHint: n.scrollHint ?? (c ? d.scrollHint : !1),
+    keyboardStep: Math.max(0.5, n.keyboardStep ?? d.keyboardStep),
+    keyboardLargeStep: Math.max(1, n.keyboardLargeStep ?? d.keyboardLargeStep),
+    onSlide: n.onSlide,
+    onZoom: n.onZoom,
+    onFullscreenChange: n.onFullscreenChange,
+    onReady: n.onReady,
+    cloudimage: n.cloudimage
+  };
+}
+function w(n, t, e) {
+  if (t.includes(n)) return n;
+  console.warn(`CIBeforeAfter: Invalid ${e} "${n}". Allowed: ${t.join(", ")}`);
+}
+function y(n, t, e, i) {
+  return n === void 0 ? e : t.includes(n) ? n : (console.warn(`CIBeforeAfter: Invalid ${i} "${n}". Allowed: ${t.join(", ")}. Using default "${e}".`), e);
+}
+function ut(n) {
+  const t = (L) => n.getAttribute(`data-ci-before-after-${L}`), e = (L) => {
+    const k = t(L);
+    if (k !== null)
+      return k === "true";
+  }, i = (L) => {
+    const k = t(L);
+    if (k === null) return;
+    const _ = parseFloat(k);
+    return isNaN(_) ? void 0 : _;
+  }, o = t("before-src"), s = t("after-src");
+  if (!o || !s)
+    throw new Error("CIBeforeAfter: data-ci-before-after-before-src and data-ci-before-after-after-src are required");
+  const r = {
+    beforeSrc: o,
+    afterSrc: s
+  }, l = t("before-alt");
+  l !== null && (r.beforeAlt = l);
+  const a = t("after-alt");
+  a !== null && (r.afterAlt = a);
+  const h = t("mode");
+  h && (r.mode = w(h, rt, "mode"));
+  const c = t("orientation");
+  c && (r.orientation = w(c, at, "orientation"));
+  const m = i("initial-position");
+  m !== void 0 && (r.initialPosition = m);
+  const u = e("zoom");
+  u !== void 0 && (r.zoom = u);
+  const p = i("zoom-max");
+  p !== void 0 && (r.zoomMax = p);
+  const b = i("zoom-min");
+  b !== void 0 && (r.zoomMin = b);
+  const g = t("theme");
+  g && (r.theme = w(g, lt, "theme"));
+  const z = t("handle-style");
+  z && (r.handleStyle = w(z, ht, "handleStyle"));
+  const P = e("labels"), C = t("label-before"), T = t("label-after");
+  P === !1 ? r.labels = !1 : C !== null || T !== null ? r.labels = {
+    before: C ?? void 0,
+    after: T ?? void 0
+  } : P === !0 && (r.labels = !0);
+  const x = t("label-position");
+  x && (r.labelPosition = w(x, ct, "labelPosition"));
+  const O = e("animate"), D = i("animate-duration"), Z = i("animate-delay"), I = t("animate-easing");
+  D !== void 0 || Z !== void 0 || I != null ? r.animate = {
+    duration: D,
+    delay: Z,
+    easing: I ?? void 0
+  } : O !== void 0 && (r.animate = O);
+  const H = e("animate-once");
+  H !== void 0 && (r.animateOnce = H);
+  const B = e("fullscreen-button");
+  B !== void 0 && (r.fullscreenButton = B);
+  const R = e("lazy-load");
+  R !== void 0 && (r.lazyLoad = R);
+  const $ = e("zoom-controls");
+  $ !== void 0 && (r.zoomControls = $);
+  const F = t("zoom-controls-position");
+  F && (r.zoomControlsPosition = w(F, ft, "zoomControlsPosition"));
+  const Y = e("scroll-hint");
+  Y !== void 0 && (r.scrollHint = Y);
+  const X = i("keyboard-step");
+  X !== void 0 && (r.keyboardStep = X);
+  const W = i("keyboard-large-step");
+  W !== void 0 && (r.keyboardLargeStep = W);
+  const N = t("ci-token");
+  return N && (r.cloudimage = {
+    token: N,
+    apiVersion: t("ci-api-version") ?? void 0,
+    domain: t("ci-domain") ?? void 0,
+    limitFactor: i("ci-limit-factor"),
+    params: t("ci-params") ?? void 0
+  }), r;
+}
+function gt(n) {
+  return isFinite(n) ? Math.max(0, Math.min(100, n)) : 50;
+}
+function f(n, t, e) {
+  const i = document.createElement(n);
+  if (t && (i.className = t), e)
+    for (const [o, s] of Object.entries(e))
+      i.setAttribute(o, s);
+  return i;
+}
+function bt(n) {
+  if (typeof n == "string") {
+    const t = document.querySelector(n);
+    if (!t)
+      throw new Error(`CIBeforeAfter: Element not found for selector "${n}"`);
+    return t;
+  }
+  return n;
+}
+function dt() {
+  return typeof window < "u" && typeof document < "u";
+}
+function M() {
+  if (!dt()) return !1;
+  const n = document;
+  return !!(n.fullscreenEnabled || n.webkitFullscreenEnabled);
+}
+function pt(n) {
+  const t = n;
+  return t.requestFullscreen ? t.requestFullscreen() : t.webkitRequestFullscreen ? t.webkitRequestFullscreen() : Promise.reject(new Error("Fullscreen API not supported"));
+}
+function G() {
+  const n = document;
+  return n.exitFullscreen ? n.exitFullscreen() : n.webkitExitFullscreen ? n.webkitExitFullscreen() : Promise.reject(new Error("Fullscreen API not supported"));
+}
+function V() {
+  const n = document;
+  return n.fullscreenElement || n.webkitFullscreenElement || null;
+}
+class v {
+  constructor() {
+    this.cleanups = [];
+  }
+  on(t, e, i, o) {
+    t.addEventListener(e, i, o), this.cleanups.push(() => t.removeEventListener(e, i, o));
+  }
+  onPassive(t, e, i) {
+    this.on(t, e, i, { passive: !0 });
+  }
+  onNonPassive(t, e, i) {
+    this.on(t, e, i, { passive: !1 });
+  }
+  destroy() {
+    for (const t of this.cleanups)
+      t();
+    this.cleanups = [];
+  }
+}
+function vt(n, t) {
+  var o;
+  let e, i;
+  if ("touches" in n) {
+    const s = n.touches[0] || ((o = n.changedTouches) == null ? void 0 : o[0]);
+    if (!s) return { x: 0, y: 0 };
+    e = s.clientX, i = s.clientY;
+  } else
+    e = n.clientX, i = n.clientY;
+  return {
+    x: e - t.left,
+    y: i - t.top
+  };
+}
+function A(n, t, e) {
+  const { x: i, y: o } = vt(n, t), s = e === "horizontal" ? t.width : t.height;
+  return s === 0 ? 50 : Math.max(0, Math.min(100, (e === "horizontal" ? i : o) / s * 100));
+}
+const wt = /^[a-zA-Z0-9_-]+$/, yt = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, zt = /^v\d+$/;
+function Pt(n) {
+  if (!wt.test(n.token))
+    throw new Error(`CIBeforeAfter: Invalid cloudimage token "${n.token}". Must match [a-zA-Z0-9_-]+`);
+  if (n.domain && !yt.test(n.domain))
+    throw new Error(`CIBeforeAfter: Invalid cloudimage domain "${n.domain}".`);
+  if (n.apiVersion && !zt.test(n.apiVersion))
+    throw new Error(`CIBeforeAfter: Invalid cloudimage apiVersion "${n.apiVersion}". Must be "v" followed by digits.`);
+}
+function Ct(n, t, e) {
+  Pt(e);
+  const {
+    token: i,
+    apiVersion: o = "v7",
+    domain: s = "cloudimg.io",
+    limitFactor: r = 100,
+    params: l = "",
+    devicePixelRatioList: a = [1, 1.5, 2]
+  } = e, h = typeof window < "u" && window.devicePixelRatio || 1, m = (a.length > 0 ? a : [1]).reduce(
+    (P, C) => Math.abs(C - h) < Math.abs(P - h) ? C : P
+  ), u = r > 0 ? r : 100, p = t * m, b = Math.ceil(p / u) * u, g = `https://${i}.${s}/${o}`, z = l ? `?${l}&w=${b}` : `?w=${b}`;
+  return n.startsWith("http://") || n.startsWith("https://") ? `${g}/${n}${z}` : `${g}/${n}${z}`;
+}
+function S(n, t, e, i) {
+  let o = t;
+  i && i.level > 1 && (e === "horizontal" ? o = t / i.level - i.panX * 100 / (i.level * i.containerWidth) : o = t / i.level - i.panY * 100 / (i.level * i.containerHeight), o = Math.max(0, Math.min(100, o)));
+  const s = e === "horizontal" ? `inset(0 0 0 ${o}%)` : `inset(${o}% 0 0 0)`;
+  n.style.clipPath = s, n.style.setProperty("-webkit-clip-path", s);
+}
+function Lt(n, t, e) {
+  e === "horizontal" ? (n.style.left = `${t}%`, n.style.top = "") : (n.style.top = `${t}%`, n.style.left = "");
+}
+function U(n) {
+  return isFinite(n) ? Math.max(0, Math.min(100, n)) : 50;
+}
+const kt = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>', Et = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>', At = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>', It = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>', Mt = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 8 22 12 18 16"/><polyline points="6 8 2 12 6 16"/><line x1="2" x2="22" y1="12" y2="12"/></svg>', St = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 18 12 22 16 18"/><polyline points="8 6 12 2 16 6"/><line x1="12" x2="12" y1="2" y2="22"/></svg>';
+function q(n, t, e) {
+  const i = f("div", `ci-before-after-handle ci-before-after-handle--${n}`, {
+    role: "slider",
+    "aria-valuenow": String(Math.round(e)),
+    "aria-valuemin": "0",
+    "aria-valuemax": "100",
+    "aria-label": "Image comparison slider. Use arrow keys to adjust the before and after split position.",
+    "aria-orientation": t,
+    tabindex: "0"
+  });
+  switch (t === "horizontal" ? i.style.left = `${e}%` : i.style.top = `${e}%`, n) {
+    case "arrows":
+      Tt(i, t);
+      break;
+    case "circle":
+      xt(i, t);
+      break;
+    case "line":
+      Ot(i);
+      break;
+  }
+  return i;
+}
+function Tt(n, t) {
+  const e = f("div", "ci-before-after-handle-line"), i = f("div", "ci-before-after-handle-grip"), o = f("div", "ci-before-after-handle-line");
+  t === "horizontal" ? i.innerHTML = kt + Et : i.innerHTML = At + It, n.append(e, i, o);
+}
+function xt(n, t) {
+  const e = f("div", "ci-before-after-handle-grip");
+  t === "horizontal" ? e.innerHTML = Mt : e.innerHTML = St, n.append(e);
+}
+function Ot(n) {
+  const t = f("div", "ci-before-after-handle-line"), e = f("div", "ci-before-after-handle-grip ci-before-after-handle-grip--pill"), i = f("div", "ci-before-after-handle-line");
+  n.append(t, e, i);
+}
+class K {
+  constructor(t, e, i, o, s) {
+    this.container = t, this.handle = e, this.mode = i, this.orientation = o, this.callbacks = s, this.events = new v(), this.containerRect = null, this.rafId = null, this.pendingPosition = null, this.abortController = null, this.bind();
+  }
+  bind() {
+    switch (this.mode) {
+      case "drag":
+        this.bindDrag();
+        break;
+      case "hover":
+        this.bindHover();
+        break;
+      case "click":
+        this.bindClick();
+        break;
+    }
+  }
+  bindDrag() {
+    this.events.on(this.handle, "mousedown", (t) => {
+      t.preventDefault(), this.startDrag();
+    }), this.events.on(this.handle, "touchstart", (t) => {
+      t.preventDefault(), this.handle.focus(), this.startTouchDrag();
+    }, { passive: !1 });
+  }
+  startDrag() {
+    this.cleanupWindowListeners(), this.abortController = new AbortController();
+    const t = this.abortController.signal;
+    this.containerRect = this.container.getBoundingClientRect(), this.callbacks.onDragStart();
+    const e = (o) => {
+      if (!this.containerRect) return;
+      const s = A(o, this.containerRect, this.orientation);
+      this.schedulePositionUpdate(s);
+    }, i = () => {
+      this.flushPositionUpdate(), this.callbacks.onDragEnd(), this.containerRect = null, this.cleanupWindowListeners();
+    };
+    window.addEventListener("mousemove", e, { signal: t }), window.addEventListener("mouseup", i, { signal: t });
+  }
+  startTouchDrag() {
+    this.cleanupWindowListeners(), this.abortController = new AbortController();
+    const t = this.abortController.signal;
+    this.containerRect = this.container.getBoundingClientRect(), this.callbacks.onDragStart();
+    const e = (o) => {
+      if (!this.containerRect || o.touches.length !== 1) return;
+      o.preventDefault();
+      const s = A(o, this.containerRect, this.orientation);
+      this.schedulePositionUpdate(s);
+    }, i = () => {
+      this.flushPositionUpdate(), this.callbacks.onDragEnd(), this.containerRect = null, this.cleanupWindowListeners();
+    };
+    window.addEventListener("touchmove", e, { passive: !1, signal: t }), window.addEventListener("touchend", i, { signal: t }), window.addEventListener("touchcancel", i, { signal: t });
+  }
+  schedulePositionUpdate(t) {
+    this.pendingPosition = t, this.rafId === null && (this.rafId = requestAnimationFrame(() => {
+      this.rafId = null, this.pendingPosition !== null && (this.callbacks.onPositionChange(this.pendingPosition), this.pendingPosition = null);
+    }));
+  }
+  flushPositionUpdate() {
+    this.rafId !== null && (cancelAnimationFrame(this.rafId), this.rafId = null), this.pendingPosition !== null && (this.callbacks.onPositionChange(this.pendingPosition), this.pendingPosition = null);
+  }
+  cleanupWindowListeners() {
+    this.abortController && (this.abortController.abort(), this.abortController = null);
+  }
+  bindHover() {
+    this.events.on(this.container, "mousemove", (t) => {
+      const e = this.container.getBoundingClientRect(), i = A(t, e, this.orientation);
+      this.schedulePositionUpdate(i);
+    });
+  }
+  bindClick() {
+    this.events.on(this.container, "click", (t) => {
+      if (this.handle.contains(t.target)) return;
+      const e = this.container.getBoundingClientRect(), i = A(t, e, this.orientation);
+      this.callbacks.onPositionChange(i);
+    });
+  }
+  updateMode(t) {
+    this.events.destroy(), this.cleanupWindowListeners(), this.flushPositionUpdate(), this.mode = t, this.bind();
+  }
+  updateOrientation(t) {
+    this.orientation = t;
+  }
+  destroy() {
+    this.cleanupWindowListeners(), this.rafId !== null && (cancelAnimationFrame(this.rafId), this.rafId = null), this.pendingPosition = null, this.events.destroy(), this.containerRect = null;
+  }
+}
+class Dt {
+  constructor(t, e, i, o, s) {
+    this.viewport = t, this.container = e, this.config = i, this.onZoomChange = o, this.zoomLevel = 1, this.panX = 0, this.panY = 0, this.containerWidth = 0, this.containerHeight = 0, this.transitioning = !1, this.transitionEndCleanup = null, this.resizeObserver = null, this.onTransformChange = s, this.updateContainerSize(), this.observeResize();
+  }
+  observeResize() {
+    typeof ResizeObserver > "u" || (this.resizeObserver = new ResizeObserver((t) => {
+      for (const e of t) {
+        const { width: i, height: o } = e.contentRect;
+        this.containerWidth = i, this.containerHeight = o;
+      }
+    }), this.resizeObserver.observe(this.container));
+  }
+  getZoom() {
+    return this.zoomLevel;
+  }
+  getContainerSize() {
+    return { width: this.containerWidth, height: this.containerHeight };
+  }
+  setZoom(t, e, i) {
+    var r;
+    const o = Math.max(this.config.zoomMin, Math.min(this.config.zoomMax, t));
+    if (o === this.zoomLevel) return;
+    const s = this.zoomLevel;
+    this.zoomLevel = o, e !== void 0 && i !== void 0 && (this.panX = e - (e - this.panX) * (o / s), this.panY = i - (i - this.panY) * (o / s)), this.clampPan(), this.applyTransform(!0), (r = this.onZoomChange) == null || r.call(this, this.zoomLevel);
+  }
+  zoomIn() {
+    this.setZoom(
+      this.zoomLevel * 1.5,
+      this.containerWidth / 2,
+      this.containerHeight / 2
+    );
+  }
+  zoomOut() {
+    this.setZoom(
+      this.zoomLevel / 1.5,
+      this.containerWidth / 2,
+      this.containerHeight / 2
+    );
+  }
+  resetZoom() {
+    var t;
+    this.zoomLevel = Math.max(1, this.config.zoomMin), this.panX = 0, this.panY = 0, this.applyTransform(!0), (t = this.onZoomChange) == null || t.call(this, this.zoomLevel);
+  }
+  getPan() {
+    return { x: this.panX, y: this.panY };
+  }
+  setPan(t, e) {
+    this.panX = t, this.panY = e, this.clampPan(), this.applyTransform(!1);
+  }
+  pan(t, e) {
+    this.zoomLevel <= 1 || (this.panX += t, this.panY += e, this.clampPan(), this.applyTransform(!1));
+  }
+  handleWheel(t) {
+    if (!t.ctrlKey && !t.metaKey) return;
+    t.preventDefault();
+    const e = this.container.getBoundingClientRect(), i = t.clientX - e.left, o = t.clientY - e.top, s = t.deltaY > 0 ? 0.9 : 1.1;
+    this.setZoom(this.zoomLevel * s, i, o);
+  }
+  toggleZoom(t, e) {
+    const i = Math.max(1, this.config.zoomMin);
+    this.zoomLevel > i ? this.resetZoom() : this.setZoom(Math.max(2, i * 1.5), t, e);
+  }
+  updateConfig(t) {
+    var i;
+    this.config = t;
+    const e = Math.max(t.zoomMin, Math.min(t.zoomMax, this.zoomLevel));
+    e !== this.zoomLevel && (this.zoomLevel = e, (i = this.onZoomChange) == null || i.call(this, this.zoomLevel)), this.clampPan(), this.applyTransform(!1);
+  }
+  updateContainerSize() {
+    const t = this.container.getBoundingClientRect();
+    this.containerWidth = t.width, this.containerHeight = t.height;
+  }
+  clampPan() {
+    if (this.zoomLevel <= 1) {
+      this.panX = 0, this.panY = 0;
+      return;
+    }
+    const t = this.containerWidth * (this.zoomLevel - 1), e = this.containerHeight * (this.zoomLevel - 1);
+    this.panX = Math.max(-t, Math.min(0, this.panX)), this.panY = Math.max(-e, Math.min(0, this.panY));
+  }
+  applyTransform(t) {
+    var e;
+    if (this.transitionEndCleanup && (this.transitionEndCleanup(), this.transitionEndCleanup = null), t) {
+      this.viewport.style.transition = "transform 300ms ease", this.transitioning = !0;
+      const i = (o) => {
+        o.target === this.viewport && (this.viewport.style.transition = "", this.transitioning = !1, this.transitionEndCleanup = null, this.viewport.removeEventListener("transitionend", i));
+      };
+      this.viewport.addEventListener("transitionend", i), this.transitionEndCleanup = () => {
+        this.viewport.removeEventListener("transitionend", i), this.viewport.style.transition = "", this.transitioning = !1;
+      };
+    } else this.transitioning || (this.viewport.style.transition = "");
+    this.viewport.style.transform = `scale(${this.zoomLevel}) translate(${this.panX / this.zoomLevel}px, ${this.panY / this.zoomLevel}px)`, (e = this.onTransformChange) == null || e.call(this);
+  }
+  destroy() {
+    var t;
+    this.transitionEndCleanup && (this.transitionEndCleanup(), this.transitionEndCleanup = null), this.viewport.style.transform = "", this.viewport.style.transition = "", (t = this.resizeObserver) == null || t.disconnect(), this.resizeObserver = null;
+  }
+}
+const Zt = 3;
+class J {
+  constructor(t, e, i, o) {
+    this.container = t, this.handle = e, this.zoomPan = i, this.scrollHintCallback = o, this.events = new v(), this.isPanning = !1, this.lastPanX = 0, this.lastPanY = 0, this.initialPinchDistance = 0, this.initialPinchZoom = 1, this.abortController = null, this.bind();
+  }
+  bind() {
+    this.events.onNonPassive(this.container, "wheel", (t) => {
+      var e;
+      t.ctrlKey || t.metaKey ? this.zoomPan.handleWheel(t) : this.zoomPan.getZoom() > 1 || (e = this.scrollHintCallback) == null || e.call(this);
+    }), this.events.on(this.container, "dblclick", (t) => {
+      if (this.handle.contains(t.target)) return;
+      const e = this.container.getBoundingClientRect();
+      this.zoomPan.toggleZoom(t.clientX - e.left, t.clientY - e.top);
+    }), this.events.on(this.container, "mousedown", (t) => {
+      this.handle.contains(t.target) || this.zoomPan.getZoom() <= 1 || (t.preventDefault(), this.startPan(t.clientX, t.clientY));
+    }), this.events.on(this.container, "touchstart", (t) => {
+      this.handle.contains(t.target) || (t.touches.length === 2 ? (t.preventDefault(), this.startPinch(t)) : t.touches.length === 1 && this.zoomPan.getZoom() > 1 && (t.preventDefault(), this.startTouchPan(t)));
+    }, { passive: !1 }), typeof window < "u" && "GestureEvent" in window && (this.events.onNonPassive(this.container, "gesturestart", (t) => {
+      t.preventDefault(), this.initialPinchZoom = this.zoomPan.getZoom();
+      const e = t, i = this.container.getBoundingClientRect();
+      e.clientX - i.left, e.clientY - i.top;
+    }), this.events.onNonPassive(this.container, "gesturechange", (t) => {
+      t.preventDefault();
+      const e = t, i = this.container.getBoundingClientRect();
+      this.zoomPan.setZoom(
+        this.initialPinchZoom * e.scale,
+        e.clientX - i.left,
+        e.clientY - i.top
+      );
+    }));
+  }
+  startPan(t, e) {
+    this.cleanupWindowListeners(), this.abortController = new AbortController();
+    const i = this.abortController.signal;
+    this.isPanning = !1, this.lastPanX = t, this.lastPanY = e;
+    const o = t, s = e, r = (a) => {
+      const h = a.clientX - this.lastPanX, c = a.clientY - this.lastPanY;
+      if (!this.isPanning) {
+        const m = a.clientX - o, u = a.clientY - s;
+        if (Math.hypot(m, u) < Zt) return;
+        this.isPanning = !0, this.container.style.cursor = "grabbing";
+      }
+      this.lastPanX = a.clientX, this.lastPanY = a.clientY, this.zoomPan.pan(h, c);
+    }, l = () => {
+      this.isPanning = !1, this.container.style.cursor = "", this.cleanupWindowListeners();
+    };
+    window.addEventListener("mousemove", r, { signal: i }), window.addEventListener("mouseup", l, { signal: i });
+  }
+  startTouchPan(t) {
+    this.cleanupWindowListeners(), this.abortController = new AbortController();
+    const e = this.abortController.signal, i = t.touches[0];
+    this.lastPanX = i.clientX, this.lastPanY = i.clientY;
+    const o = (r) => {
+      if (r.touches.length !== 1) return;
+      r.preventDefault();
+      const l = r.touches[0], a = l.clientX - this.lastPanX, h = l.clientY - this.lastPanY;
+      this.lastPanX = l.clientX, this.lastPanY = l.clientY, this.zoomPan.pan(a, h);
+    }, s = () => {
+      this.cleanupWindowListeners();
+    };
+    window.addEventListener("touchmove", o, { passive: !1, signal: e }), window.addEventListener("touchend", s, { signal: e }), window.addEventListener("touchcancel", s, { signal: e });
+  }
+  startPinch(t) {
+    if (t.touches.length < 2) return;
+    this.cleanupWindowListeners(), this.abortController = new AbortController();
+    const e = this.abortController.signal, [i, o] = [t.touches[0], t.touches[1]];
+    this.initialPinchDistance = Math.hypot(o.clientX - i.clientX, o.clientY - i.clientY), this.initialPinchDistance === 0 && (this.initialPinchDistance = 1), this.initialPinchZoom = this.zoomPan.getZoom();
+    const s = this.container.getBoundingClientRect(), r = (i.clientX + o.clientX) / 2 - s.left, l = (i.clientY + o.clientY) / 2 - s.top, a = (c) => {
+      if (c.touches.length !== 2) return;
+      c.preventDefault();
+      const [m, u] = [c.touches[0], c.touches[1]], b = Math.hypot(u.clientX - m.clientX, u.clientY - m.clientY) / this.initialPinchDistance;
+      this.zoomPan.setZoom(this.initialPinchZoom * b, r, l);
+    }, h = () => {
+      this.cleanupWindowListeners();
+    };
+    window.addEventListener("touchmove", a, { passive: !1, signal: e }), window.addEventListener("touchend", h, { signal: e }), window.addEventListener("touchcancel", h, { signal: e });
+  }
+  cleanupWindowListeners() {
+    this.abortController && (this.abortController.abort(), this.abortController = null);
+  }
+  destroy() {
+    this.cleanupWindowListeners(), this.events.destroy();
+  }
+}
+const Ht = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>', Bt = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>', Rt = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>';
+function Q(n, t) {
+  const e = new v(), i = f("div", `ci-before-after-zoom-controls ci-before-after-zoom-controls--${n}`), o = f("button", "ci-before-after-zoom-in", {
+    type: "button",
+    "aria-label": "Zoom in"
+  });
+  o.innerHTML = Ht, e.on(o, "click", t.onZoomIn);
+  const s = f("button", "ci-before-after-zoom-out", {
+    type: "button",
+    "aria-label": "Zoom out"
+  });
+  s.innerHTML = Bt, e.on(s, "click", t.onZoomOut);
+  const r = f("button", "ci-before-after-zoom-reset", {
+    type: "button",
+    "aria-label": "Reset zoom"
+  });
+  return r.innerHTML = Rt, e.on(r, "click", t.onReset), i.append(o, s, r), { element: i, events: e };
+}
+class tt {
+  constructor(t) {
+    this.timeout = null, this.el = f("div", "ci-before-after-scroll-hint", {
+      "aria-hidden": "true"
+    });
+    const e = typeof navigator < "u" && /Mac|iPhone|iPad|iPod/.test(navigator.userAgent);
+    this.el.textContent = e ? "⌘ + scroll or pinch to zoom" : "Ctrl + scroll or pinch to zoom", t.appendChild(this.el);
+  }
+  show() {
+    this.timeout && clearTimeout(this.timeout), this.el.classList.add("ci-before-after-scroll-hint--visible"), this.timeout = setTimeout(() => {
+      this.el.classList.remove("ci-before-after-scroll-hint--visible"), this.timeout = null;
+    }, 1500);
+  }
+  destroy() {
+    this.timeout && clearTimeout(this.timeout), this.el.remove();
+  }
+}
+function et(n, t, e, i) {
+  const o = `ci-before-after-label--${e}`, s = f(
+    "div",
+    `ci-before-after-label ci-before-after-label-before ${o}`,
+    { "aria-hidden": "true" }
+  );
+  s.textContent = n;
+  const r = f(
+    "div",
+    `ci-before-after-label ci-before-after-label-after ${o}`,
+    { "aria-hidden": "true" }
+  );
+  return r.textContent = t, { before: s, after: r };
+}
+function it(n, t, e, i) {
+  if (!n || !t) return;
+  const o = 15;
+  e < o ? n.classList.add("ci-before-after-label--hidden") : n.classList.remove("ci-before-after-label--hidden"), e > 100 - o ? t.classList.add("ci-before-after-label--hidden") : t.classList.remove("ci-before-after-label--hidden");
+}
+const nt = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" x2="14" y1="3" y2="10"/><line x1="3" x2="10" y1="21" y2="14"/></svg>', $t = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" x2="21" y1="10" y2="3"/><line x1="3" x2="10" y1="21" y2="14"/></svg>';
+class ot {
+  constructor(t, e) {
+    this.container = t, this.onFullscreenChange = e, this.button = null, this.events = new v(), this.isActive = !1, M() && (this.createButton(), this.bindEvents());
+  }
+  createButton() {
+    this.button = f("button", "ci-before-after-fullscreen-btn", {
+      type: "button",
+      "aria-label": "Enter fullscreen",
+      "aria-pressed": "false"
+    }), this.button.innerHTML = nt, this.events.on(this.button, "click", () => {
+      this.toggle().catch(() => {
+      });
+    }), this.container.appendChild(this.button);
+  }
+  bindEvents() {
+    this.events.on(document, "fullscreenchange", () => this.handleChange()), this.events.on(document, "webkitfullscreenchange", () => this.handleChange());
+  }
+  handleChange() {
+    var i;
+    const t = V(), e = this.isActive;
+    this.isActive = t === this.container, e !== this.isActive && (this.container.classList.toggle("ci-before-after-container--fullscreen", this.isActive), this.button && (this.button.innerHTML = this.isActive ? $t : nt, this.button.setAttribute("aria-label", this.isActive ? "Exit fullscreen" : "Enter fullscreen"), this.button.setAttribute("aria-pressed", String(this.isActive))), (i = this.onFullscreenChange) == null || i.call(this, this.isActive));
+  }
+  async enter() {
+    M() && await pt(this.container);
+  }
+  async exit() {
+    M() && V() === this.container && await G();
+  }
+  async toggle() {
+    this.isActive ? await this.exit() : await this.enter();
+  }
+  getIsFullscreen() {
+    return this.isActive;
+  }
+  destroy() {
+    var e, i;
+    const t = this.isActive;
+    this.events.destroy(), t && (this.isActive = !1, (e = this.onFullscreenChange) == null || e.call(this, !1), G().catch(() => {
+    })), this.container.classList.remove("ci-before-after-container--fullscreen"), (i = this.button) == null || i.remove();
+  }
+}
+class Ft {
+  constructor(t, e, i, o, s, r) {
+    this.container = t, this.duration = e, this.delay = i, this.easing = o, this.animateOnce = s, this.onAnimate = r, this.observer = null, this.hasPlayed = !1, this.isAnimating = !1, this.delayTimer = null, this.durationTimer = null, this.observe();
+  }
+  observe() {
+    typeof IntersectionObserver > "u" || (this.observer = new IntersectionObserver(
+      (t) => {
+        for (const e of t)
+          if (e.isIntersecting) {
+            if (this.animateOnce && this.hasPlayed || this.isAnimating) continue;
+            this.play();
+          }
+      },
+      { threshold: 0.3 }
+    ), this.observer.observe(this.container));
+  }
+  play() {
+    var t, e;
+    if (this.hasPlayed = !0, this.isAnimating = !0, typeof window < "u" && ((t = window.matchMedia) != null && t.call(window, "(prefers-reduced-motion: reduce)").matches)) {
+      this.onAnimate(!0), this.isAnimating = !1, this.animateOnce && ((e = this.observer) == null || e.disconnect());
+      return;
+    }
+    this.container.classList.add("ci-before-after-animate-entrance"), this.container.style.setProperty("--ci-before-after-animate-duration", `${this.duration}ms`), this.container.style.setProperty("--ci-before-after-animate-easing", this.easing), this.delayTimer = setTimeout(() => {
+      this.delayTimer = null, this.onAnimate(!1), this.durationTimer = setTimeout(() => {
+        var i;
+        this.durationTimer = null, this.container.classList.remove("ci-before-after-animate-entrance"), this.isAnimating = !1, this.animateOnce && ((i = this.observer) == null || i.disconnect());
+      }, this.duration);
+    }, this.delay);
+  }
+  getHasPlayed() {
+    return this.hasPlayed;
+  }
+  destroy() {
+    var t;
+    this.delayTimer && clearTimeout(this.delayTimer), this.durationTimer && clearTimeout(this.durationTimer), this.delayTimer = null, this.durationTimer = null, this.isAnimating = !1, this.container.classList.remove("ci-before-after-animate-entrance"), this.container.style.removeProperty("--ci-before-after-animate-duration"), this.container.style.removeProperty("--ci-before-after-animate-easing"), (t = this.observer) == null || t.disconnect(), this.observer = null;
+  }
+}
+class st {
+  constructor(t, e, i, o, s, r) {
+    this.handle = t, this.orientation = e, this.step = i, this.largeStep = o, this.zoomEnabled = s, this.callbacks = r, this.events = new v(), this.bind();
+  }
+  bind() {
+    this.events.on(this.handle, "keydown", (t) => {
+      this.handleKeyDown(t);
+    });
+  }
+  handleKeyDown(t) {
+    var s, r, l, a, h, c;
+    if (t.ctrlKey || t.altKey || t.metaKey) return;
+    const e = this.callbacks.getPosition(), i = t.shiftKey ? this.largeStep : this.step;
+    let o = null;
+    if (this.orientation === "horizontal")
+      switch (t.key) {
+        case "ArrowLeft":
+          o = e - i;
+          break;
+        case "ArrowRight":
+          o = e + i;
+          break;
+      }
+    else
+      switch (t.key) {
+        case "ArrowUp":
+          o = e - i;
+          break;
+        case "ArrowDown":
+          o = e + i;
+          break;
+      }
+    switch (t.key) {
+      case "Home":
+        o = 0;
+        break;
+      case "End":
+        o = 100;
+        break;
+    }
+    if (o !== null) {
+      t.preventDefault(), o = Math.max(0, Math.min(100, o)), this.callbacks.onPositionChange(o);
+      return;
+    }
+    if (this.zoomEnabled)
+      switch (t.key) {
+        case "+":
+        case "=":
+          t.preventDefault(), (r = (s = this.callbacks).onZoomIn) == null || r.call(s);
+          break;
+        case "-":
+          t.preventDefault(), (a = (l = this.callbacks).onZoomOut) == null || a.call(l);
+          break;
+        case "0":
+          t.preventDefault(), (c = (h = this.callbacks).onZoomReset) == null || c.call(h);
+          break;
+      }
+  }
+  updateConfig(t, e, i, o) {
+    this.orientation = t, this.step = e, this.largeStep = i, this.zoomEnabled = o;
+  }
+  destroy() {
+    this.events.destroy();
+  }
+}
+function Yt(n, t) {
+  n.setAttribute("aria-valuenow", String(Math.round(t)));
+}
+function Xt(n) {
+  n.setAttribute("role", "group"), n.setAttribute("aria-label", "Before and after image comparison");
+}
+class Wt {
+  constructor(t, e) {
+    this.events = new v(), this.imageEvents = new v(), this.sliderGestures = null, this.zoomPan = null, this.zoomGestures = null, this.scrollHint = null, this.fullscreenManager = null, this.entranceAnimation = null, this.keyboardHandler = null, this.resizeObserver = null, this.zoomControlsEl = null, this.zoomControlsEvents = null, this.lazyLoadObserver = null, this.resizeDebounceTimer = null, this.animTransitionTimer = null, this.suppressCallbacks = !1;
+    const i = bt(t);
+    this.userConfig = { ...e }, this.config = j(e), this.state = {
+      position: this.config.initialPosition,
+      isDragging: !1,
+      zoomLevel: 1,
+      panX: 0,
+      panY: 0,
+      isReady: !1,
+      isFullscreen: !1
+    }, this.buildDOM(i), this.initModules(), this.loadImages();
+  }
+  // --- Public API ---
+  getElements() {
+    return {
+      container: this.elements.container,
+      viewport: this.elements.viewport,
+      beforeImage: this.elements.beforeImage,
+      afterImage: this.elements.afterImage,
+      handle: this.elements.handle
+    };
+  }
+  setPosition(t) {
+    const e = U(t);
+    this.updatePosition(e);
+  }
+  getPosition() {
+    return this.state.position;
+  }
+  setZoom(t) {
+    var e;
+    (e = this.zoomPan) == null || e.setZoom(t);
+  }
+  getZoom() {
+    var t;
+    return ((t = this.zoomPan) == null ? void 0 : t.getZoom()) ?? 1;
+  }
+  resetZoom() {
+    var t;
+    (t = this.zoomPan) == null || t.resetZoom();
+  }
+  enterFullscreen() {
+    var t;
+    (t = this.fullscreenManager) == null || t.enter().catch(() => {
+    });
+  }
+  exitFullscreen() {
+    var t;
+    (t = this.fullscreenManager) == null || t.exit().catch(() => {
+    });
+  }
+  isFullscreen() {
+    var t;
+    return ((t = this.fullscreenManager) == null ? void 0 : t.getIsFullscreen()) ?? !1;
+  }
+  update(t) {
+    var r, l, a, h, c, m, u, p;
+    this.userConfig = { ...this.userConfig, ...t };
+    const e = this.config;
+    this.config = j(this.userConfig);
+    const i = this.config.beforeSrc !== e.beforeSrc, o = this.config.afterSrc !== e.afterSrc, s = !Nt(this.config.cloudimage, e.cloudimage);
+    if ((i || o || s) && (this.lazyLoadObserver && (this.lazyLoadObserver.disconnect(), this.lazyLoadObserver = null), this.state.isReady = !1, this.elements.container.classList.add("ci-before-after-loading"), (i || s) && (this.elements.beforeImage.src = this.resolveImageSrc(this.config.beforeSrc)), (o || s) && (this.elements.afterImage.src = this.resolveImageSrc(this.config.afterSrc)), this.registerImageLoadHandlers(i || s, o || s), this.config.cloudimage && !e.cloudimage ? this.initResizeObserver() : !this.config.cloudimage && e.cloudimage && ((r = this.resizeObserver) == null || r.disconnect(), this.resizeObserver = null)), this.config.beforeAlt !== e.beforeAlt && this.elements.beforeImage.setAttribute("alt", this.config.beforeAlt), this.config.afterAlt !== e.afterAlt && this.elements.afterImage.setAttribute("alt", this.config.afterAlt), this.elements.container.classList.toggle("ci-before-after-theme-dark", this.config.theme === "dark"), this.elements.container.classList.toggle("ci-before-after-container--horizontal", this.config.orientation === "horizontal"), this.elements.container.classList.toggle("ci-before-after-container--vertical", this.config.orientation === "vertical"), this.elements.container.classList.toggle("ci-before-after-container--hover-mode", this.config.mode === "hover"), this.elements.container.classList.toggle("ci-before-after-container--click-mode", this.config.mode === "click"), this.elements.viewport.classList.toggle("ci-before-after-viewport--zoomable", this.config.zoom), (this.config.handleStyle !== e.handleStyle || this.config.orientation !== e.orientation) && this.rebuildHandle(), this.config.mode !== e.mode && ((l = this.sliderGestures) == null || l.updateMode(this.config.mode)), this.config.orientation !== e.orientation && ((a = this.sliderGestures) == null || a.updateOrientation(this.config.orientation)), (this.config.labelsEnabled !== e.labelsEnabled || this.config.labelBefore !== e.labelBefore || this.config.labelAfter !== e.labelAfter || this.config.labelPosition !== e.labelPosition || this.config.orientation !== e.orientation) && this.rebuildLabels(), this.config.zoom !== e.zoom)
+      this.rebuildZoom();
+    else if (this.zoomPan && (this.zoomPan.updateConfig(this.config), this.config.scrollHint !== e.scrollHint && ((h = this.scrollHint) == null || h.destroy(), this.scrollHint = null, this.config.scrollHint && (this.scrollHint = new tt(this.elements.container))), (this.config.zoomControls !== e.zoomControls || this.config.zoomControlsPosition !== e.zoomControlsPosition) && ((c = this.zoomControlsEvents) == null || c.destroy(), this.zoomControlsEvents = null, (m = this.zoomControlsEl) == null || m.remove(), this.zoomControlsEl = null, this.elements.container.classList.remove("ci-before-after-container--zoom-top-right"), this.elements.container.classList.remove("ci-before-after-container--zoom-top"), this.elements.container.classList.remove("ci-before-after-container--zoom-left"), this.config.zoomControls))) {
+      const b = Q(
+        this.config.zoomControlsPosition,
+        {
+          onZoomIn: () => {
+            var g;
+            return (g = this.zoomPan) == null ? void 0 : g.zoomIn();
+          },
+          onZoomOut: () => {
+            var g;
+            return (g = this.zoomPan) == null ? void 0 : g.zoomOut();
+          },
+          onReset: () => {
+            var g;
+            return (g = this.zoomPan) == null ? void 0 : g.resetZoom();
+          }
+        }
+      );
+      this.zoomControlsEl = b.element, this.zoomControlsEvents = b.events, this.elements.container.appendChild(this.zoomControlsEl), this.applyZoomPositionClasses();
+    }
+    this.config.initialPosition !== e.initialPosition && this.updatePosition(this.config.initialPosition), this.config.fullscreenButton !== e.fullscreenButton && this.rebuildFullscreen(), this.config.animateEnabled !== e.animateEnabled && ((u = this.entranceAnimation) == null || u.destroy(), this.entranceAnimation = null, this.config.animateEnabled && this.initEntranceAnimation()), (p = this.keyboardHandler) == null || p.updateConfig(
+      this.config.orientation,
+      this.config.keyboardStep,
+      this.config.keyboardLargeStep,
+      this.config.zoom
+    ), this.updatePosition(this.state.position);
+  }
+  destroy() {
+    var t, e, i, o, s, r, l, a, h, c, m;
+    (t = this.sliderGestures) == null || t.destroy(), (e = this.zoomGestures) == null || e.destroy(), (i = this.zoomPan) == null || i.destroy(), this.zoomPan = null, (o = this.scrollHint) == null || o.destroy(), (s = this.fullscreenManager) == null || s.destroy(), (r = this.entranceAnimation) == null || r.destroy(), (l = this.keyboardHandler) == null || l.destroy(), this.events.destroy(), this.imageEvents.destroy(), (a = this.resizeObserver) == null || a.disconnect(), (h = this.lazyLoadObserver) == null || h.disconnect(), this.lazyLoadObserver = null, (c = this.zoomControlsEvents) == null || c.destroy(), this.zoomControlsEvents = null, (m = this.zoomControlsEl) == null || m.remove(), this.resizeDebounceTimer && clearTimeout(this.resizeDebounceTimer), this.animTransitionTimer && clearTimeout(this.animTransitionTimer), this.elements.container.innerHTML = "", this.elements.container.removeAttribute("role"), this.elements.container.removeAttribute("aria-label"), this.elements.container.className = this.elements.container.className.split(" ").filter((u) => !u.startsWith("ci-before-after")).join(" ");
+  }
+  // --- Private Methods ---
+  buildDOM(t) {
+    t.innerHTML = "";
+    const e = `ci-before-after-container--${this.config.orientation}`;
+    t.classList.add("ci-before-after-container", e), this.config.mode === "hover" && t.classList.add("ci-before-after-container--hover-mode"), this.config.mode === "click" && t.classList.add("ci-before-after-container--click-mode"), this.config.theme === "dark" && t.classList.add("ci-before-after-theme-dark"), t.classList.add("ci-before-after-loading"), Xt(t);
+    const i = f("div", "ci-before-after-viewport");
+    this.config.zoom && i.classList.add("ci-before-after-viewport--zoomable");
+    const o = f("div", "ci-before-after-wrapper"), s = f("img", "ci-before-after-image ci-before-after-before", {
+      alt: this.config.beforeAlt,
+      draggable: "false",
+      role: "img"
+    }), r = f("div", "ci-before-after-clip");
+    S(r, this.state.position, this.config.orientation);
+    const l = f("img", "ci-before-after-image ci-before-after-after", {
+      alt: this.config.afterAlt,
+      draggable: "false",
+      role: "img"
+    });
+    r.appendChild(l), o.append(s, r), i.appendChild(o), t.appendChild(i);
+    const a = q(this.config.handleStyle, this.config.orientation, this.state.position);
+    t.appendChild(a);
+    const h = a.querySelector(".ci-before-after-handle-grip");
+    let c = null, m = null;
+    if (this.config.labelsEnabled) {
+      const u = et(
+        this.config.labelBefore,
+        this.config.labelAfter,
+        this.config.labelPosition,
+        this.config.orientation
+      );
+      c = u.before, m = u.after, t.append(c, m);
+    }
+    this.elements = {
+      container: t,
+      viewport: i,
+      wrapper: o,
+      beforeImage: s,
+      afterImage: l,
+      clip: r,
+      handle: a,
+      handleGrip: h,
+      labelBefore: c,
+      labelAfter: m
+    };
+  }
+  initModules() {
+    this.sliderGestures = new K(
+      this.elements.container,
+      this.elements.handle,
+      this.config.mode,
+      this.config.orientation,
+      {
+        onPositionChange: (t) => this.updatePosition(t),
+        onDragStart: () => this.onDragStart(),
+        onDragEnd: () => this.onDragEnd()
+      }
+    ), this.keyboardHandler = new st(
+      this.elements.handle,
+      this.config.orientation,
+      this.config.keyboardStep,
+      this.config.keyboardLargeStep,
+      this.config.zoom,
+      {
+        onPositionChange: (t) => this.updatePosition(t),
+        getPosition: () => this.state.position,
+        onZoomIn: () => {
+          var t;
+          return (t = this.zoomPan) == null ? void 0 : t.zoomIn();
+        },
+        onZoomOut: () => {
+          var t;
+          return (t = this.zoomPan) == null ? void 0 : t.zoomOut();
+        },
+        onZoomReset: () => {
+          var t;
+          return (t = this.zoomPan) == null ? void 0 : t.resetZoom();
+        }
+      }
+    ), this.config.zoom && this.initZoom(), this.config.fullscreenButton && (this.elements.container.classList.add("ci-before-after-container--has-fullscreen"), this.fullscreenManager = new ot(
+      this.elements.container,
+      (t) => {
+        this.state.isFullscreen = t, E(this.config.onFullscreenChange, t);
+      }
+    )), this.config.animateEnabled && this.initEntranceAnimation(), this.config.cloudimage && this.initResizeObserver();
+  }
+  initZoom() {
+    if (this.zoomPan = new Dt(
+      this.elements.viewport,
+      this.elements.container,
+      this.config,
+      (t) => {
+        this.state.zoomLevel = t, this.syncClip(), E(this.config.onZoom, t);
+      },
+      () => this.syncClip()
+    ), this.config.scrollHint && (this.scrollHint = new tt(this.elements.container)), this.zoomGestures = new J(
+      this.elements.container,
+      this.elements.handle,
+      this.zoomPan,
+      () => {
+        var t;
+        return (t = this.scrollHint) == null ? void 0 : t.show();
+      }
+    ), this.config.zoomControls) {
+      const t = Q(
+        this.config.zoomControlsPosition,
+        {
+          onZoomIn: () => {
+            var e;
+            return (e = this.zoomPan) == null ? void 0 : e.zoomIn();
+          },
+          onZoomOut: () => {
+            var e;
+            return (e = this.zoomPan) == null ? void 0 : e.zoomOut();
+          },
+          onReset: () => {
+            var e;
+            return (e = this.zoomPan) == null ? void 0 : e.resetZoom();
+          }
+        }
+      );
+      this.zoomControlsEl = t.element, this.zoomControlsEvents = t.events, this.elements.container.appendChild(this.zoomControlsEl), this.applyZoomPositionClasses();
+    }
+  }
+  applyZoomPositionClasses() {
+    const t = this.config.zoomControlsPosition;
+    this.elements.container.classList.toggle("ci-before-after-container--zoom-top-right", t === "top-right"), this.elements.container.classList.toggle("ci-before-after-container--zoom-top", t.startsWith("top-")), this.elements.container.classList.toggle("ci-before-after-container--zoom-left", t.endsWith("-left"));
+  }
+  initEntranceAnimation() {
+    this.animTransitionTimer && (clearTimeout(this.animTransitionTimer), this.animTransitionTimer = null, this.elements.handle.style.transition = "", this.elements.clip.style.transition = "");
+    const t = 0;
+    this.suppressCallbacks = !0, this.updatePosition(t), this.suppressCallbacks = !1, this.entranceAnimation = new Ft(
+      this.elements.container,
+      this.config.animateDuration,
+      this.config.animateDelay,
+      this.config.animateEasing,
+      this.config.animateOnce,
+      (e) => {
+        e || (this.elements.handle.style.transition = `left ${this.config.animateDuration}ms ${this.config.animateEasing}, top ${this.config.animateDuration}ms ${this.config.animateEasing}`, this.elements.clip.style.transition = `clip-path ${this.config.animateDuration}ms ${this.config.animateEasing}`), this.updatePosition(this.config.initialPosition), e || (this.animTransitionTimer = setTimeout(() => {
+          this.animTransitionTimer = null, this.elements.handle.style.transition = "", this.elements.clip.style.transition = "";
+        }, this.config.animateDuration));
+      }
+    );
+  }
+  loadImages() {
+    const t = this.resolveImageSrc(this.config.beforeSrc), e = this.resolveImageSrc(this.config.afterSrc);
+    this.config.lazyLoad && typeof IntersectionObserver < "u" ? (this.lazyLoadObserver = new IntersectionObserver(
+      (i) => {
+        var o;
+        for (const s of i)
+          s.isIntersecting && (this.elements.beforeImage.src = t, this.elements.afterImage.src = e, (o = this.lazyLoadObserver) == null || o.disconnect(), this.lazyLoadObserver = null);
+      },
+      { threshold: 0 }
+    ), this.lazyLoadObserver.observe(this.elements.container)) : (this.elements.beforeImage.src = t, this.elements.afterImage.src = e), this.registerImageLoadHandlers(!0, !0);
+  }
+  /**
+   * Register load/error handlers for images. Cleans up previous handlers first.
+   * When only one image changed, the unchanged image is treated as already loaded.
+   */
+  registerImageLoadHandlers(t, e) {
+    this.imageEvents.destroy();
+    let i = !t, o = !e;
+    const s = () => {
+      i && o && this.onImagesReady();
+    }, r = () => {
+      i || (i = !0, s());
+    }, l = () => {
+      o || (o = !0, s());
+    }, a = () => {
+      console.warn(`CIBeforeAfter: Failed to load image "${this.elements.beforeImage.src}"`), i || (i = !0, s());
+    }, h = () => {
+      console.warn(`CIBeforeAfter: Failed to load image "${this.elements.afterImage.src}"`), o || (o = !0, s());
+    };
+    this.imageEvents.on(this.elements.beforeImage, "load", r), this.imageEvents.on(this.elements.afterImage, "load", l), this.imageEvents.on(this.elements.beforeImage, "error", a), this.imageEvents.on(this.elements.afterImage, "error", h), this.elements.beforeImage.complete && this.elements.beforeImage.src && r(), this.elements.afterImage.complete && this.elements.afterImage.src && l();
+  }
+  onImagesReady() {
+    if (this.state.isReady) return;
+    this.state.isReady = !0;
+    const { naturalWidth: t, naturalHeight: e } = this.elements.beforeImage;
+    t && e && (this.elements.wrapper.style.aspectRatio = `${t} / ${e}`), this.elements.container.classList.remove("ci-before-after-loading"), E(this.config.onReady);
+  }
+  getClipZoomInfo() {
+    if (!this.zoomPan || this.zoomPan.getZoom() <= 1) return;
+    const t = this.zoomPan.getPan(), e = this.zoomPan.getContainerSize();
+    return {
+      level: this.zoomPan.getZoom(),
+      panX: t.x,
+      panY: t.y,
+      containerWidth: e.width,
+      containerHeight: e.height
+    };
+  }
+  syncClip() {
+    S(this.elements.clip, this.state.position, this.config.orientation, this.getClipZoomInfo());
+  }
+  updatePosition(t) {
+    this.state.position = U(t), S(this.elements.clip, this.state.position, this.config.orientation, this.getClipZoomInfo()), Lt(this.elements.handle, this.state.position, this.config.orientation), Yt(this.elements.handle, this.state.position), it(
+      this.elements.labelBefore,
+      this.elements.labelAfter,
+      this.state.position,
+      this.config.orientation
+    ), this.suppressCallbacks || E(this.config.onSlide, this.state.position);
+  }
+  onDragStart() {
+    this.state.isDragging = !0, this.elements.container.classList.add("ci-before-after-container--dragging");
+  }
+  onDragEnd() {
+    this.state.isDragging = !1, this.elements.container.classList.remove("ci-before-after-container--dragging");
+  }
+  resolveImageSrc(t) {
+    if (this.config.cloudimage) {
+      const e = this.elements.container.getBoundingClientRect().width || 800;
+      return Ct(t, e, this.config.cloudimage);
+    }
+    return t;
+  }
+  rebuildHandle() {
+    var i, o;
+    const t = document.activeElement === this.elements.handle;
+    this.elements.handle.remove();
+    const e = q(this.config.handleStyle, this.config.orientation, this.state.position);
+    this.elements.container.appendChild(e), this.elements.handle = e, this.elements.handleGrip = e.querySelector(".ci-before-after-handle-grip"), (i = this.sliderGestures) == null || i.destroy(), this.sliderGestures = new K(
+      this.elements.container,
+      this.elements.handle,
+      this.config.mode,
+      this.config.orientation,
+      {
+        onPositionChange: (s) => this.updatePosition(s),
+        onDragStart: () => this.onDragStart(),
+        onDragEnd: () => this.onDragEnd()
+      }
+    ), (o = this.keyboardHandler) == null || o.destroy(), this.keyboardHandler = new st(
+      this.elements.handle,
+      this.config.orientation,
+      this.config.keyboardStep,
+      this.config.keyboardLargeStep,
+      this.config.zoom,
+      {
+        onPositionChange: (s) => this.updatePosition(s),
+        getPosition: () => this.state.position,
+        onZoomIn: () => {
+          var s;
+          return (s = this.zoomPan) == null ? void 0 : s.zoomIn();
+        },
+        onZoomOut: () => {
+          var s;
+          return (s = this.zoomPan) == null ? void 0 : s.zoomOut();
+        },
+        onZoomReset: () => {
+          var s;
+          return (s = this.zoomPan) == null ? void 0 : s.resetZoom();
+        }
+      }
+    ), this.zoomGestures && this.zoomPan && (this.zoomGestures.destroy(), this.zoomGestures = new J(
+      this.elements.container,
+      this.elements.handle,
+      this.zoomPan,
+      () => {
+        var s;
+        return (s = this.scrollHint) == null ? void 0 : s.show();
+      }
+    )), t && this.elements.handle.focus();
+  }
+  rebuildLabels() {
+    var t, e;
+    if ((t = this.elements.labelBefore) == null || t.remove(), (e = this.elements.labelAfter) == null || e.remove(), this.elements.labelBefore = null, this.elements.labelAfter = null, this.config.labelsEnabled) {
+      const i = et(
+        this.config.labelBefore,
+        this.config.labelAfter,
+        this.config.labelPosition,
+        this.config.orientation
+      );
+      this.elements.labelBefore = i.before, this.elements.labelAfter = i.after, this.elements.container.append(i.before, i.after), it(i.before, i.after, this.state.position, this.config.orientation);
+    }
+  }
+  rebuildZoom() {
+    var t, e, i, o, s;
+    (t = this.zoomGestures) == null || t.destroy(), this.zoomGestures = null, (e = this.scrollHint) == null || e.destroy(), this.scrollHint = null, (i = this.zoomControlsEvents) == null || i.destroy(), this.zoomControlsEvents = null, (o = this.zoomControlsEl) == null || o.remove(), this.zoomControlsEl = null, (s = this.zoomPan) == null || s.destroy(), this.zoomPan = null, this.elements.container.classList.remove("ci-before-after-container--zoom-top-right"), this.elements.container.classList.remove("ci-before-after-container--zoom-top"), this.elements.container.classList.remove("ci-before-after-container--zoom-left"), this.config.zoom && this.initZoom();
+  }
+  rebuildFullscreen() {
+    var t;
+    (t = this.fullscreenManager) == null || t.destroy(), this.fullscreenManager = null, this.elements.container.classList.remove("ci-before-after-container--has-fullscreen"), this.config.fullscreenButton && (this.elements.container.classList.add("ci-before-after-container--has-fullscreen"), this.fullscreenManager = new ot(
+      this.elements.container,
+      (e) => {
+        this.state.isFullscreen = e, E(this.config.onFullscreenChange, e);
+      }
+    ));
+  }
+  initResizeObserver() {
+    typeof ResizeObserver > "u" || (this.resizeObserver = new ResizeObserver(() => {
+      this.resizeDebounceTimer && clearTimeout(this.resizeDebounceTimer), this.resizeDebounceTimer = setTimeout(() => {
+        if (this.config.cloudimage) {
+          const t = this.resolveImageSrc(this.config.beforeSrc), e = this.resolveImageSrc(this.config.afterSrc);
+          this.elements.beforeImage.src !== t && (this.elements.beforeImage.src = t), this.elements.afterImage.src !== e && (this.elements.afterImage.src = e);
+        }
+        this.resizeDebounceTimer = null;
+      }, 200);
+    }), this.resizeObserver.observe(this.elements.container));
+  }
+}
+function E(n, ...t) {
+  if (n)
+    try {
+      n(...t);
+    } catch (e) {
+      console.error("CIBeforeAfter: callback error:", e);
+    }
+}
+function Nt(n, t) {
+  if (n === t) return !0;
+  if (!n || !t) return !1;
+  const e = Object.keys(n), i = Object.keys(t);
+  if (e.length !== i.length) return !1;
+  for (const o of e)
+    if (n[o] !== t[o]) return !1;
+  return !0;
+}
+class mt extends Wt {
+  static autoInit(t) {
+    if (!dt()) return [];
+    const i = (t || document).querySelectorAll("[data-ci-before-after-before-src]"), o = [];
+    return i.forEach((s) => {
+      const r = ut(s);
+      o.push(new mt(s, r));
+    }), o;
+  }
+  constructor(t, e) {
+    super(t, e);
+  }
+}
+export {
+  mt as CIBeforeAfter,
+  Wt as CIBeforeAfterCore,
+  mt as default
+};
+//# sourceMappingURL=js-cloudimage-before-after.esm.js.map

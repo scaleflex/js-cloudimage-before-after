@@ -9,8 +9,5 @@ yarn-error.log*
 .vscode/*
 .DS_Store
 .idea/
-dist/
-!dist/js-cloudimage-before-after.min.js
-!dist/js-cloudimage-before-after.min.js.map
 coverage/
 *.tsbuildinfo
