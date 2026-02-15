@@ -1,0 +1,16 @@
+{
+  "name": "js-cloudimage-before-after-vanilla-example",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Vanilla JS example for js-cloudimage-before-after",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite"
+  },
+  "dependencies": {
+    "js-cloudimage-before-after": "^1.0.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}
