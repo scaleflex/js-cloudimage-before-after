@@ -1,3 +1,14 @@
+const STYLE_ID = 'ci-before-after-styles';
+
+export function injectStyles(css: string): void {
+  if (!isBrowser()) return;
+  if (document.getElementById(STYLE_ID)) return;
+  const style = document.createElement('style');
+  style.id = STYLE_ID;
+  style.textContent = css;
+  document.head.appendChild(style);
+}
+
 export function createElement<K extends keyof HTMLElementTagNameMap>(
   tag: K,
   className?: string,

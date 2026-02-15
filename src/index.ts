@@ -1,8 +1,8 @@
 import { CIBeforeAfterCore } from './core/ci-before-after';
 import { parseDataAttributes } from './core/config';
-import { isBrowser } from './utils/dom';
+import { isBrowser, injectStyles } from './utils/dom';
 import type { CIBeforeAfterConfig, CIBeforeAfterInstance } from './core/types';
-import './styles/index.css';
+import cssText from './styles/index.css?inline';
 
 export type {
   CIBeforeAfterConfig,
@@ -24,6 +24,7 @@ export { CIBeforeAfterCore };
 class CIBeforeAfter extends CIBeforeAfterCore {
   static autoInit(root?: HTMLElement): CIBeforeAfterInstance[] {
     if (!isBrowser()) return [];
+    injectStyles(cssText);
 
     const parent = root || document;
     const elements = parent.querySelectorAll<HTMLElement>('[data-ci-before-after-before-src]');
@@ -38,6 +39,7 @@ class CIBeforeAfter extends CIBeforeAfterCore {
   }
 
   constructor(target: HTMLElement | string, config: CIBeforeAfterConfig) {
+    injectStyles(cssText);
     super(target, config);
   }
 }

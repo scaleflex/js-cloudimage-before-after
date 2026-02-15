@@ -1,3 +1,4 @@
+export declare function injectStyles(css: string): void;
 export declare function createElement<K extends keyof HTMLElementTagNameMap>(tag: K, className?: string, attrs?: Record<string, string>): HTMLElementTagNameMap[K];
 export declare function resolveElement(target: HTMLElement | string): HTMLElement;
 export declare function isBrowser(): boolean;
