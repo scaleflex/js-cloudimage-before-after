@@ -162,6 +162,11 @@ export class CIBeforeAfterCore implements CIBeforeAfterInstance {
       this.elements.afterImage.setAttribute('alt', this.config.afterAlt);
     }
 
+    // Update aspect ratio
+    if (this.config.aspectRatio !== oldConfig.aspectRatio) {
+      this.elements.wrapper.style.aspectRatio = this.config.aspectRatio || '';
+    }
+
     // Update theme
     this.elements.container.classList.toggle('ci-before-after-theme-dark', this.config.theme === 'dark');
 
@@ -330,6 +335,9 @@ export class CIBeforeAfterCore implements CIBeforeAfterInstance {
 
     // Wrapper (contains images)
     const wrapper = createElement('div', 'ci-before-after-wrapper');
+    if (this.config.aspectRatio) {
+      wrapper.style.aspectRatio = this.config.aspectRatio;
+    }
 
     // Before image (SPEC-01: add role="img")
     const beforeImage = createElement('img', 'ci-before-after-image ci-before-after-before', {

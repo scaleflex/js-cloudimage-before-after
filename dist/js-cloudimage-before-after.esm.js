@@ -1,4 +1,4 @@
-const he = ["drag", "hover", "click"], fe = ["horizontal", "vertical"], de = ["light", "dark"], me = ["arrows", "circle", "line"], be = ["top", "bottom"], ue = [
+const fe = ["drag", "hover", "click"], de = ["horizontal", "vertical"], me = ["light", "dark"], be = ["arrows", "circle", "line"], ue = ["top", "bottom"], ge = [
   "top-left",
   "top-center",
   "top-right",
@@ -26,7 +26,7 @@ const he = ["drag", "hover", "click"], fe = ["horizontal", "vertical"], de = ["l
   keyboardStep: 1,
   keyboardLargeStep: 10
 };
-function G(o) {
+function V(o) {
   const e = o.labels;
   let t = !0, i = "Before", n = "After";
   e === !1 ? t = !1 : typeof e == "object" && (i = e.before ?? "Before", n = e.after ?? "After");
@@ -39,18 +39,18 @@ function G(o) {
     afterSrc: o.afterSrc,
     beforeAlt: o.beforeAlt ?? d.beforeAlt,
     afterAlt: o.afterAlt ?? d.afterAlt,
-    mode: z(o.mode, he, d.mode, "mode"),
-    orientation: z(o.orientation, fe, d.orientation, "orientation"),
-    initialPosition: ve(o.initialPosition ?? d.initialPosition),
+    mode: z(o.mode, fe, d.mode, "mode"),
+    orientation: z(o.orientation, de, d.orientation, "orientation"),
+    initialPosition: we(o.initialPosition ?? d.initialPosition),
     zoom: h,
     zoomMax: Math.max(1, o.zoomMax ?? d.zoomMax),
     zoomMin: Math.max(1, Math.min(o.zoomMin ?? d.zoomMin, o.zoomMax ?? d.zoomMax)),
-    theme: z(o.theme, de, d.theme, "theme"),
-    handleStyle: z(o.handleStyle, me, d.handleStyle, "handleStyle"),
+    theme: z(o.theme, me, d.theme, "theme"),
+    handleStyle: z(o.handleStyle, be, d.handleStyle, "handleStyle"),
     labelsEnabled: t,
     labelBefore: i,
     labelAfter: n,
-    labelPosition: z(o.labelPosition, be, d.labelPosition, "labelPosition"),
+    labelPosition: z(o.labelPosition, ue, d.labelPosition, "labelPosition"),
     animateEnabled: s,
     animateDuration: l,
     animateDelay: a,
@@ -59,7 +59,7 @@ function G(o) {
     fullscreenButton: o.fullscreenButton ?? d.fullscreenButton,
     lazyLoad: o.lazyLoad ?? d.lazyLoad,
     zoomControls: o.zoomControls ?? (h ? d.zoomControls : !1),
-    zoomControlsPosition: z(o.zoomControlsPosition, ue, d.zoomControlsPosition, "zoomControlsPosition"),
+    zoomControlsPosition: z(o.zoomControlsPosition, ge, d.zoomControlsPosition, "zoomControlsPosition"),
     scrollHint: o.scrollHint ?? (h ? d.scrollHint : !1),
     keyboardStep: Math.max(0.5, o.keyboardStep ?? d.keyboardStep),
     keyboardLargeStep: Math.max(1, o.keyboardLargeStep ?? d.keyboardLargeStep),
@@ -67,6 +67,7 @@ function G(o) {
     onZoom: o.onZoom,
     onFullscreenChange: o.onFullscreenChange,
     onReady: o.onReady,
+    aspectRatio: o.aspectRatio,
     cloudimage: o.cloudimage
   };
 }
@@ -77,7 +78,7 @@ function w(o, e, t) {
 function z(o, e, t, i) {
   return o === void 0 ? t : e.includes(o) ? o : (console.warn(`CIBeforeAfter: Invalid ${i} "${o}". Allowed: ${e.join(", ")}. Using default "${t}".`), t);
 }
-function pe(o) {
+function ve(o) {
   const e = (k) => o.getAttribute(`data-ci-before-after-${k}`), t = (k) => {
     const x = e(k);
     if (x !== null)
@@ -85,8 +86,8 @@ function pe(o) {
   }, i = (k) => {
     const x = e(k);
     if (x === null) return;
-    const _ = parseFloat(x);
-    return isNaN(_) ? void 0 : _;
+    const G = parseFloat(x);
+    return isNaN(G) ? void 0 : G;
   }, n = e("before-src"), r = e("after-src");
   if (!n || !r)
     throw new Error("CIBeforeAfter: data-ci-before-after-before-src and data-ci-before-after-after-src are required");
@@ -98,9 +99,9 @@ function pe(o) {
   const a = e("after-alt");
   a !== null && (s.afterAlt = a);
   const c = e("mode");
-  c && (s.mode = w(c, he, "mode"));
+  c && (s.mode = w(c, fe, "mode"));
   const h = e("orientation");
-  h && (s.orientation = w(h, fe, "orientation"));
+  h && (s.orientation = w(h, de, "orientation"));
   const m = i("initial-position");
   m !== void 0 && (s.initialPosition = m);
   const b = t("zoom");
@@ -110,55 +111,57 @@ function pe(o) {
   const g = i("zoom-min");
   g !== void 0 && (s.zoomMin = g);
   const u = e("theme");
-  u && (s.theme = w(u, de, "theme"));
+  u && (s.theme = w(u, me, "theme"));
   const y = e("handle-style");
-  y && (s.handleStyle = w(y, me, "handleStyle"));
+  y && (s.handleStyle = w(y, be, "handleStyle"));
   const P = t("labels"), C = e("label-before"), T = e("label-after");
   P === !1 ? s.labels = !1 : C !== null || T !== null ? s.labels = {
     before: C ?? void 0,
     after: T ?? void 0
   } : P === !0 && (s.labels = !0);
   const O = e("label-position");
-  O && (s.labelPosition = w(O, be, "labelPosition"));
-  const D = t("animate"), Z = i("animate-duration"), H = i("animate-delay"), A = e("animate-easing");
-  Z !== void 0 || H !== void 0 || A != null ? s.animate = {
+  O && (s.labelPosition = w(O, ue, "labelPosition"));
+  const D = t("animate"), Z = i("animate-duration"), R = i("animate-delay"), A = e("animate-easing");
+  Z !== void 0 || R !== void 0 || A != null ? s.animate = {
     duration: Z,
-    delay: H,
+    delay: R,
     easing: A ?? void 0
   } : D !== void 0 && (s.animate = D);
-  const B = t("animate-once");
-  B !== void 0 && (s.animateOnce = B);
-  const R = t("fullscreen-button");
-  R !== void 0 && (s.fullscreenButton = R);
+  const H = t("animate-once");
+  H !== void 0 && (s.animateOnce = H);
+  const B = t("fullscreen-button");
+  B !== void 0 && (s.fullscreenButton = B);
   const $ = t("lazy-load");
   $ !== void 0 && (s.lazyLoad = $);
   const F = t("zoom-controls");
   F !== void 0 && (s.zoomControls = F);
   const Y = e("zoom-controls-position");
-  Y && (s.zoomControlsPosition = w(Y, ue, "zoomControlsPosition"));
+  Y && (s.zoomControlsPosition = w(Y, ge, "zoomControlsPosition"));
   const X = t("scroll-hint");
   X !== void 0 && (s.scrollHint = X);
   const W = i("keyboard-step");
   W !== void 0 && (s.keyboardStep = W);
   const N = i("keyboard-large-step");
   N !== void 0 && (s.keyboardLargeStep = N);
-  const j = e("ci-token");
-  return j && (s.cloudimage = {
-    token: j,
+  const j = e("aspect-ratio");
+  j !== null && (s.aspectRatio = j);
+  const _ = e("ci-token");
+  return _ && (s.cloudimage = {
+    token: _,
     apiVersion: e("ci-api-version") ?? void 0,
     domain: e("ci-domain") ?? void 0,
     limitFactor: i("ci-limit-factor"),
     params: e("ci-params") ?? void 0
   }), s;
 }
-function ve(o) {
+function we(o) {
   return isFinite(o) ? Math.max(0, Math.min(100, o)) : 50;
 }
-const V = "ci-before-after-styles";
-function U(o) {
-  if (!S() || document.getElementById(V)) return;
+const U = "ci-before-after-styles";
+function q(o) {
+  if (!S() || document.getElementById(U)) return;
   const e = document.createElement("style");
-  e.id = V, e.textContent = o, document.head.appendChild(e);
+  e.id = U, e.textContent = o, document.head.appendChild(e);
 }
 function f(o, e, t) {
   const i = document.createElement(o);
@@ -167,7 +170,7 @@ function f(o, e, t) {
       i.setAttribute(n, r);
   return i;
 }
-function we(o) {
+function ze(o) {
   if (typeof o == "string") {
     const e = document.querySelector(o);
     if (!e)
@@ -184,15 +187,15 @@ function I() {
   const o = document;
   return !!(o.fullscreenEnabled || o.webkitFullscreenEnabled);
 }
-function ze(o) {
+function ye(o) {
   const e = o;
   return e.requestFullscreen ? e.requestFullscreen() : e.webkitRequestFullscreen ? e.webkitRequestFullscreen() : Promise.reject(new Error("Fullscreen API not supported"));
 }
-function q() {
+function K() {
   const o = document;
   return o.exitFullscreen ? o.exitFullscreen() : o.webkitExitFullscreen ? o.webkitExitFullscreen() : Promise.reject(new Error("Fullscreen API not supported"));
 }
-function K() {
+function J() {
   const o = document;
   return o.fullscreenElement || o.webkitFullscreenElement || null;
 }
@@ -215,7 +218,7 @@ class v {
     this.cleanups = [];
   }
 }
-function ye(o, e) {
+function Pe(o, e) {
   var n;
   let t, i;
   if ("touches" in o) {
@@ -230,20 +233,20 @@ function ye(o, e) {
   };
 }
 function E(o, e, t) {
-  const { x: i, y: n } = ye(o, e), r = t === "horizontal" ? e.width : e.height;
+  const { x: i, y: n } = Pe(o, e), r = t === "horizontal" ? e.width : e.height;
   return r === 0 ? 50 : Math.max(0, Math.min(100, (t === "horizontal" ? i : n) / r * 100));
 }
-const Pe = /^[a-zA-Z0-9_-]+$/, Ce = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, ke = /^v\d+$/;
-function xe(o) {
-  if (!Pe.test(o.token))
+const Ce = /^[a-zA-Z0-9_-]+$/, ke = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, xe = /^v\d+$/;
+function Le(o) {
+  if (!Ce.test(o.token))
     throw new Error(`CIBeforeAfter: Invalid cloudimage token "${o.token}". Must match [a-zA-Z0-9_-]+`);
-  if (o.domain && !Ce.test(o.domain))
+  if (o.domain && !ke.test(o.domain))
     throw new Error(`CIBeforeAfter: Invalid cloudimage domain "${o.domain}".`);
-  if (o.apiVersion && !ke.test(o.apiVersion))
+  if (o.apiVersion && !xe.test(o.apiVersion))
     throw new Error(`CIBeforeAfter: Invalid cloudimage apiVersion "${o.apiVersion}". Must be "v" followed by digits.`);
 }
-function Le(o, e, t) {
-  xe(t);
+function Ee(o, e, t) {
+  Le(t);
   const {
     token: i,
     apiVersion: n = "v7",
@@ -262,14 +265,14 @@ function M(o, e, t, i) {
   const r = t === "horizontal" ? `inset(0 0 0 ${n}%)` : `inset(${n}% 0 0 0)`;
   o.style.clipPath = r, o.style.setProperty("-webkit-clip-path", r);
 }
-function Ee(o, e, t) {
+function Ae(o, e, t) {
   t === "horizontal" ? (o.style.left = `${e}%`, o.style.top = "") : (o.style.top = `${e}%`, o.style.left = "");
 }
-function J(o) {
+function Q(o) {
   return isFinite(o) ? Math.max(0, Math.min(100, o)) : 50;
 }
-const Ae = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>', Ie = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>', Me = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>', Se = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>', Te = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 8 22 12 18 16"/><polyline points="6 8 2 12 6 16"/><line x1="2" x2="22" y1="12" y2="12"/></svg>', Oe = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 18 12 22 16 18"/><polyline points="8 6 12 2 16 6"/><line x1="12" x2="12" y1="2" y2="22"/></svg>';
-function Q(o, e, t) {
+const Ie = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>', Me = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>', Se = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>', Te = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>', Oe = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 8 22 12 18 16"/><polyline points="6 8 2 12 6 16"/><line x1="2" x2="22" y1="12" y2="12"/></svg>', De = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 18 12 22 16 18"/><polyline points="8 6 12 2 16 6"/><line x1="12" x2="12" y1="2" y2="22"/></svg>';
+function ee(o, e, t) {
   const i = f("div", `ci-before-after-handle ci-before-after-handle--${o}`, {
     role: "slider",
     "aria-valuenow": String(Math.round(t)),
@@ -281,10 +284,10 @@ function Q(o, e, t) {
   });
   switch (e === "horizontal" ? i.style.left = `${t}%` : i.style.top = `${t}%`, o) {
     case "arrows":
-      De(i, e);
+      Ze(i, e);
       break;
     case "circle":
-      Ze(i, e);
+      Re(i, e);
       break;
     case "line":
       He(i);
@@ -292,19 +295,19 @@ function Q(o, e, t) {
   }
   return i;
 }
-function De(o, e) {
-  const t = f("div", "ci-before-after-handle-line"), i = f("div", "ci-before-after-handle-grip"), n = f("div", "ci-before-after-handle-line");
-  e === "horizontal" ? i.innerHTML = Ae + Ie : i.innerHTML = Me + Se, o.append(t, i, n);
-}
 function Ze(o, e) {
+  const t = f("div", "ci-before-after-handle-line"), i = f("div", "ci-before-after-handle-grip"), n = f("div", "ci-before-after-handle-line");
+  e === "horizontal" ? i.innerHTML = Ie + Me : i.innerHTML = Se + Te, o.append(t, i, n);
+}
+function Re(o, e) {
   const t = f("div", "ci-before-after-handle-grip");
-  e === "horizontal" ? t.innerHTML = Te : t.innerHTML = Oe, o.append(t);
+  e === "horizontal" ? t.innerHTML = Oe : t.innerHTML = De, o.append(t);
 }
 function He(o) {
   const e = f("div", "ci-before-after-handle-line"), t = f("div", "ci-before-after-handle-grip ci-before-after-handle-grip--pill"), i = f("div", "ci-before-after-handle-line");
   o.append(e, t, i);
 }
-class ee {
+class te {
   constructor(e, t, i, n, r) {
     this.container = e, this.handle = t, this.mode = i, this.orientation = n, this.callbacks = r, this.events = new v(), this.containerRect = null, this.rafId = null, this.pendingPosition = null, this.abortController = null, this.bind();
   }
@@ -487,8 +490,8 @@ class Be {
     this.transitionEndCleanup && (this.transitionEndCleanup(), this.transitionEndCleanup = null), this.viewport.style.transform = "", this.viewport.style.transition = "", (e = this.resizeObserver) == null || e.disconnect(), this.resizeObserver = null;
   }
 }
-const Re = 3;
-class te {
+const $e = 3;
+class ie {
   constructor(e, t, i, n) {
     this.container = e, this.handle = t, this.zoomPan = i, this.scrollHintCallback = n, this.events = new v(), this.isPanning = !1, this.lastPanX = 0, this.lastPanY = 0, this.initialPinchDistance = 0, this.initialPinchZoom = 1, this.abortController = null, this.bind();
   }
@@ -526,7 +529,7 @@ class te {
       const c = a.clientX - this.lastPanX, h = a.clientY - this.lastPanY;
       if (!this.isPanning) {
         const m = a.clientX - n, b = a.clientY - r;
-        if (Math.hypot(m, b) < Re) return;
+        if (Math.hypot(m, b) < $e) return;
         this.isPanning = !0, this.container.style.cursor = "grabbing";
       }
       this.lastPanX = a.clientX, this.lastPanY = a.clientY, this.zoomPan.pan(c, h);
@@ -571,25 +574,25 @@ class te {
     this.cleanupWindowListeners(), this.events.destroy();
   }
 }
-const $e = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>', Fe = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>', Ye = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>';
-function ie(o, e) {
+const Fe = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>', Ye = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>', Xe = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>';
+function oe(o, e) {
   const t = new v(), i = f("div", `ci-before-after-zoom-controls ci-before-after-zoom-controls--${o}`), n = f("button", "ci-before-after-zoom-in", {
     type: "button",
     "aria-label": "Zoom in"
   });
-  n.innerHTML = $e, t.on(n, "click", e.onZoomIn);
+  n.innerHTML = Fe, t.on(n, "click", e.onZoomIn);
   const r = f("button", "ci-before-after-zoom-out", {
     type: "button",
     "aria-label": "Zoom out"
   });
-  r.innerHTML = Fe, t.on(r, "click", e.onZoomOut);
+  r.innerHTML = Ye, t.on(r, "click", e.onZoomOut);
   const s = f("button", "ci-before-after-zoom-reset", {
     type: "button",
     "aria-label": "Reset zoom"
   });
-  return s.innerHTML = Ye, t.on(s, "click", e.onReset), i.append(n, r, s), { element: i, events: t };
+  return s.innerHTML = Xe, t.on(s, "click", e.onReset), i.append(n, r, s), { element: i, events: t };
 }
-class oe {
+class ne {
   constructor(e) {
     this.timeout = null, this.el = f("div", "ci-before-after-scroll-hint", {
       "aria-hidden": "true"
@@ -606,7 +609,7 @@ class oe {
     this.timeout && clearTimeout(this.timeout), this.el.remove();
   }
 }
-function ne(o, e, t, i) {
+function re(o, e, t, i) {
   const n = `ci-before-after-label--${t}`, r = f(
     "div",
     `ci-before-after-label ci-before-after-label-before ${n}`,
@@ -620,13 +623,13 @@ function ne(o, e, t, i) {
   );
   return s.textContent = e, { before: r, after: s };
 }
-function re(o, e, t, i) {
+function se(o, e, t, i) {
   if (!o || !e) return;
   const n = 15;
   t < n ? o.classList.add("ci-before-after-label--hidden") : o.classList.remove("ci-before-after-label--hidden"), t > 100 - n ? e.classList.add("ci-before-after-label--hidden") : e.classList.remove("ci-before-after-label--hidden");
 }
-const se = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" x2="14" y1="3" y2="10"/><line x1="3" x2="10" y1="21" y2="14"/></svg>', Xe = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" x2="21" y1="10" y2="3"/><line x1="3" x2="10" y1="21" y2="14"/></svg>';
-class ae {
+const ae = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" x2="14" y1="3" y2="10"/><line x1="3" x2="10" y1="21" y2="14"/></svg>', We = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" x2="21" y1="10" y2="3"/><line x1="3" x2="10" y1="21" y2="14"/></svg>';
+class le {
   constructor(e, t) {
     this.container = e, this.onFullscreenChange = t, this.button = null, this.events = new v(), this.isActive = !1, I() && (this.createButton(), this.bindEvents());
   }
@@ -635,7 +638,7 @@ class ae {
       type: "button",
       "aria-label": "Enter fullscreen",
       "aria-pressed": "false"
-    }), this.button.innerHTML = se, this.events.on(this.button, "click", () => {
+    }), this.button.innerHTML = ae, this.events.on(this.button, "click", () => {
       this.toggle().catch(() => {
       });
     }), this.container.appendChild(this.button);
@@ -645,14 +648,14 @@ class ae {
   }
   handleChange() {
     var i;
-    const e = K(), t = this.isActive;
-    this.isActive = e === this.container, t !== this.isActive && (this.container.classList.toggle("ci-before-after-container--fullscreen", this.isActive), this.button && (this.button.innerHTML = this.isActive ? Xe : se, this.button.setAttribute("aria-label", this.isActive ? "Exit fullscreen" : "Enter fullscreen"), this.button.setAttribute("aria-pressed", String(this.isActive))), (i = this.onFullscreenChange) == null || i.call(this, this.isActive));
+    const e = J(), t = this.isActive;
+    this.isActive = e === this.container, t !== this.isActive && (this.container.classList.toggle("ci-before-after-container--fullscreen", this.isActive), this.button && (this.button.innerHTML = this.isActive ? We : ae, this.button.setAttribute("aria-label", this.isActive ? "Exit fullscreen" : "Enter fullscreen"), this.button.setAttribute("aria-pressed", String(this.isActive))), (i = this.onFullscreenChange) == null || i.call(this, this.isActive));
   }
   async enter() {
-    I() && await ze(this.container);
+    I() && await ye(this.container);
   }
   async exit() {
-    I() && K() === this.container && await q();
+    I() && J() === this.container && await K();
   }
   async toggle() {
     this.isActive ? await this.exit() : await this.enter();
@@ -663,11 +666,11 @@ class ae {
   destroy() {
     var t, i;
     const e = this.isActive;
-    this.events.destroy(), e && (this.isActive = !1, (t = this.onFullscreenChange) == null || t.call(this, !1), q().catch(() => {
+    this.events.destroy(), e && (this.isActive = !1, (t = this.onFullscreenChange) == null || t.call(this, !1), K().catch(() => {
     })), this.container.classList.remove("ci-before-after-container--fullscreen"), (i = this.button) == null || i.remove();
   }
 }
-class We {
+class Ne {
   constructor(e, t, i, n, r, s) {
     this.container = e, this.duration = t, this.delay = i, this.easing = n, this.animateOnce = r, this.onAnimate = s, this.observer = null, this.hasPlayed = !1, this.isAnimating = !1, this.delayTimer = null, this.durationTimer = null, this.observe();
   }
@@ -704,7 +707,7 @@ class We {
     this.delayTimer && clearTimeout(this.delayTimer), this.durationTimer && clearTimeout(this.durationTimer), this.delayTimer = null, this.durationTimer = null, this.isAnimating = !1, this.container.classList.remove("ci-before-after-animate-entrance"), this.container.style.removeProperty("--ci-before-after-animate-duration"), this.container.style.removeProperty("--ci-before-after-animate-easing"), (e = this.observer) == null || e.disconnect(), this.observer = null;
   }
 }
-class le {
+class ce {
   constructor(e, t, i, n, r, s) {
     this.handle = e, this.orientation = t, this.step = i, this.largeStep = n, this.zoomEnabled = r, this.callbacks = s, this.events = new v(), this.bind();
   }
@@ -769,17 +772,17 @@ class le {
     this.events.destroy();
   }
 }
-function Ne(o, e) {
+function je(o, e) {
   o.setAttribute("aria-valuenow", String(Math.round(e)));
 }
-function je(o) {
+function _e(o) {
   o.setAttribute("role", "group"), o.setAttribute("aria-label", "Before and after image comparison");
 }
-class _e {
+class Ge {
   constructor(e, t) {
     this.events = new v(), this.imageEvents = new v(), this.sliderGestures = null, this.zoomPan = null, this.zoomGestures = null, this.scrollHint = null, this.fullscreenManager = null, this.entranceAnimation = null, this.keyboardHandler = null, this.resizeObserver = null, this.zoomControlsEl = null, this.zoomControlsEvents = null, this.lazyLoadObserver = null, this.resizeDebounceTimer = null, this.animTransitionTimer = null, this.suppressCallbacks = !1;
-    const i = we(e);
-    this.userConfig = { ...t }, this.config = G(t), this.state = {
+    const i = ze(e);
+    this.userConfig = { ...t }, this.config = V(t), this.state = {
       position: this.config.initialPosition,
       isDragging: !1,
       zoomLevel: 1,
@@ -800,7 +803,7 @@ class _e {
     };
   }
   setPosition(e) {
-    const t = J(e);
+    const t = Q(e);
     this.updatePosition(t);
   }
   getPosition() {
@@ -836,12 +839,12 @@ class _e {
     var s, l, a, c, h, m, b, p;
     this.userConfig = { ...this.userConfig, ...e };
     const t = this.config;
-    this.config = G(this.userConfig);
-    const i = this.config.beforeSrc !== t.beforeSrc, n = this.config.afterSrc !== t.afterSrc, r = !Ge(this.config.cloudimage, t.cloudimage);
-    if ((i || n || r) && (this.lazyLoadObserver && (this.lazyLoadObserver.disconnect(), this.lazyLoadObserver = null), this.state.isReady = !1, this.elements.container.classList.add("ci-before-after-loading"), (i || r) && (this.elements.beforeImage.src = this.resolveImageSrc(this.config.beforeSrc)), (n || r) && (this.elements.afterImage.src = this.resolveImageSrc(this.config.afterSrc)), this.registerImageLoadHandlers(i || r, n || r), this.config.cloudimage && !t.cloudimage ? this.initResizeObserver() : !this.config.cloudimage && t.cloudimage && ((s = this.resizeObserver) == null || s.disconnect(), this.resizeObserver = null)), this.config.beforeAlt !== t.beforeAlt && this.elements.beforeImage.setAttribute("alt", this.config.beforeAlt), this.config.afterAlt !== t.afterAlt && this.elements.afterImage.setAttribute("alt", this.config.afterAlt), this.elements.container.classList.toggle("ci-before-after-theme-dark", this.config.theme === "dark"), this.elements.container.classList.toggle("ci-before-after-container--horizontal", this.config.orientation === "horizontal"), this.elements.container.classList.toggle("ci-before-after-container--vertical", this.config.orientation === "vertical"), this.elements.container.classList.toggle("ci-before-after-container--hover-mode", this.config.mode === "hover"), this.elements.container.classList.toggle("ci-before-after-container--click-mode", this.config.mode === "click"), this.elements.viewport.classList.toggle("ci-before-after-viewport--zoomable", this.config.zoom), (this.config.handleStyle !== t.handleStyle || this.config.orientation !== t.orientation) && this.rebuildHandle(), this.config.mode !== t.mode && ((l = this.sliderGestures) == null || l.updateMode(this.config.mode)), this.config.orientation !== t.orientation && ((a = this.sliderGestures) == null || a.updateOrientation(this.config.orientation)), (this.config.labelsEnabled !== t.labelsEnabled || this.config.labelBefore !== t.labelBefore || this.config.labelAfter !== t.labelAfter || this.config.labelPosition !== t.labelPosition || this.config.orientation !== t.orientation) && this.rebuildLabels(), this.config.zoom !== t.zoom)
+    this.config = V(this.userConfig);
+    const i = this.config.beforeSrc !== t.beforeSrc, n = this.config.afterSrc !== t.afterSrc, r = !Ve(this.config.cloudimage, t.cloudimage);
+    if ((i || n || r) && (this.lazyLoadObserver && (this.lazyLoadObserver.disconnect(), this.lazyLoadObserver = null), this.state.isReady = !1, this.elements.container.classList.add("ci-before-after-loading"), (i || r) && (this.elements.beforeImage.src = this.resolveImageSrc(this.config.beforeSrc)), (n || r) && (this.elements.afterImage.src = this.resolveImageSrc(this.config.afterSrc)), this.registerImageLoadHandlers(i || r, n || r), this.config.cloudimage && !t.cloudimage ? this.initResizeObserver() : !this.config.cloudimage && t.cloudimage && ((s = this.resizeObserver) == null || s.disconnect(), this.resizeObserver = null)), this.config.beforeAlt !== t.beforeAlt && this.elements.beforeImage.setAttribute("alt", this.config.beforeAlt), this.config.afterAlt !== t.afterAlt && this.elements.afterImage.setAttribute("alt", this.config.afterAlt), this.config.aspectRatio !== t.aspectRatio && (this.elements.wrapper.style.aspectRatio = this.config.aspectRatio || ""), this.elements.container.classList.toggle("ci-before-after-theme-dark", this.config.theme === "dark"), this.elements.container.classList.toggle("ci-before-after-container--horizontal", this.config.orientation === "horizontal"), this.elements.container.classList.toggle("ci-before-after-container--vertical", this.config.orientation === "vertical"), this.elements.container.classList.toggle("ci-before-after-container--hover-mode", this.config.mode === "hover"), this.elements.container.classList.toggle("ci-before-after-container--click-mode", this.config.mode === "click"), this.elements.viewport.classList.toggle("ci-before-after-viewport--zoomable", this.config.zoom), (this.config.handleStyle !== t.handleStyle || this.config.orientation !== t.orientation) && this.rebuildHandle(), this.config.mode !== t.mode && ((l = this.sliderGestures) == null || l.updateMode(this.config.mode)), this.config.orientation !== t.orientation && ((a = this.sliderGestures) == null || a.updateOrientation(this.config.orientation)), (this.config.labelsEnabled !== t.labelsEnabled || this.config.labelBefore !== t.labelBefore || this.config.labelAfter !== t.labelAfter || this.config.labelPosition !== t.labelPosition || this.config.orientation !== t.orientation) && this.rebuildLabels(), this.config.zoom !== t.zoom)
       this.rebuildZoom();
-    else if (this.zoomPan && (this.zoomPan.updateConfig(this.config), this.config.scrollHint !== t.scrollHint && ((c = this.scrollHint) == null || c.destroy(), this.scrollHint = null, this.config.scrollHint && (this.scrollHint = new oe(this.elements.container))), (this.config.zoomControls !== t.zoomControls || this.config.zoomControlsPosition !== t.zoomControlsPosition) && ((h = this.zoomControlsEvents) == null || h.destroy(), this.zoomControlsEvents = null, (m = this.zoomControlsEl) == null || m.remove(), this.zoomControlsEl = null, this.elements.container.classList.remove("ci-before-after-container--zoom-top-right"), this.elements.container.classList.remove("ci-before-after-container--zoom-top"), this.elements.container.classList.remove("ci-before-after-container--zoom-left"), this.config.zoomControls))) {
-      const g = ie(
+    else if (this.zoomPan && (this.zoomPan.updateConfig(this.config), this.config.scrollHint !== t.scrollHint && ((c = this.scrollHint) == null || c.destroy(), this.scrollHint = null, this.config.scrollHint && (this.scrollHint = new ne(this.elements.container))), (this.config.zoomControls !== t.zoomControls || this.config.zoomControlsPosition !== t.zoomControlsPosition) && ((h = this.zoomControlsEvents) == null || h.destroy(), this.zoomControlsEvents = null, (m = this.zoomControlsEl) == null || m.remove(), this.zoomControlsEl = null, this.elements.container.classList.remove("ci-before-after-container--zoom-top-right"), this.elements.container.classList.remove("ci-before-after-container--zoom-top"), this.elements.container.classList.remove("ci-before-after-container--zoom-left"), this.config.zoomControls))) {
+      const g = oe(
         this.config.zoomControlsPosition,
         {
           onZoomIn: () => {
@@ -875,10 +878,12 @@ class _e {
   buildDOM(e) {
     e.innerHTML = "";
     const t = `ci-before-after-container--${this.config.orientation}`;
-    e.classList.add("ci-before-after-container", t), this.config.mode === "hover" && e.classList.add("ci-before-after-container--hover-mode"), this.config.mode === "click" && e.classList.add("ci-before-after-container--click-mode"), this.config.theme === "dark" && e.classList.add("ci-before-after-theme-dark"), e.classList.add("ci-before-after-loading"), je(e);
+    e.classList.add("ci-before-after-container", t), this.config.mode === "hover" && e.classList.add("ci-before-after-container--hover-mode"), this.config.mode === "click" && e.classList.add("ci-before-after-container--click-mode"), this.config.theme === "dark" && e.classList.add("ci-before-after-theme-dark"), e.classList.add("ci-before-after-loading"), _e(e);
     const i = f("div", "ci-before-after-viewport");
     this.config.zoom && i.classList.add("ci-before-after-viewport--zoomable");
-    const n = f("div", "ci-before-after-wrapper"), r = f("img", "ci-before-after-image ci-before-after-before", {
+    const n = f("div", "ci-before-after-wrapper");
+    this.config.aspectRatio && (n.style.aspectRatio = this.config.aspectRatio);
+    const r = f("img", "ci-before-after-image ci-before-after-before", {
       alt: this.config.beforeAlt,
       draggable: "false",
       role: "img"
@@ -890,12 +895,12 @@ class _e {
       role: "img"
     });
     s.appendChild(l), n.append(r, s), i.appendChild(n), e.appendChild(i);
-    const a = Q(this.config.handleStyle, this.config.orientation, this.state.position);
+    const a = ee(this.config.handleStyle, this.config.orientation, this.state.position);
     e.appendChild(a);
     const c = a.querySelector(".ci-before-after-handle-grip");
     let h = null, m = null;
     if (this.config.labelsEnabled) {
-      const b = ne(
+      const b = re(
         this.config.labelBefore,
         this.config.labelAfter,
         this.config.labelPosition,
@@ -917,7 +922,7 @@ class _e {
     };
   }
   initModules() {
-    this.sliderGestures = new ee(
+    this.sliderGestures = new te(
       this.elements.container,
       this.elements.handle,
       this.config.mode,
@@ -927,7 +932,7 @@ class _e {
         onDragStart: () => this.onDragStart(),
         onDragEnd: () => this.onDragEnd()
       }
-    ), this.keyboardHandler = new le(
+    ), this.keyboardHandler = new ce(
       this.elements.handle,
       this.config.orientation,
       this.config.keyboardStep,
@@ -949,7 +954,7 @@ class _e {
           return (e = this.zoomPan) == null ? void 0 : e.resetZoom();
         }
       }
-    ), this.config.zoom && this.initZoom(), this.config.fullscreenButton && (this.elements.container.classList.add("ci-before-after-container--has-fullscreen"), this.fullscreenManager = new ae(
+    ), this.config.zoom && this.initZoom(), this.config.fullscreenButton && (this.elements.container.classList.add("ci-before-after-container--has-fullscreen"), this.fullscreenManager = new le(
       this.elements.container,
       (e) => {
         this.state.isFullscreen = e, L(this.config.onFullscreenChange, e);
@@ -965,7 +970,7 @@ class _e {
         this.state.zoomLevel = e, this.syncClip(), L(this.config.onZoom, e);
       },
       () => this.syncClip()
-    ), this.config.scrollHint && (this.scrollHint = new oe(this.elements.container)), this.zoomGestures = new te(
+    ), this.config.scrollHint && (this.scrollHint = new ne(this.elements.container)), this.zoomGestures = new ie(
       this.elements.container,
       this.elements.handle,
       this.zoomPan,
@@ -974,7 +979,7 @@ class _e {
         return (e = this.scrollHint) == null ? void 0 : e.show();
       }
     ), this.config.zoomControls) {
-      const e = ie(
+      const e = oe(
         this.config.zoomControlsPosition,
         {
           onZoomIn: () => {
@@ -1001,7 +1006,7 @@ class _e {
   initEntranceAnimation() {
     this.animTransitionTimer && (clearTimeout(this.animTransitionTimer), this.animTransitionTimer = null, this.elements.handle.style.transition = "", this.elements.clip.style.transition = "");
     const e = 0;
-    this.suppressCallbacks = !0, this.updatePosition(e), this.suppressCallbacks = !1, this.entranceAnimation = new We(
+    this.suppressCallbacks = !0, this.updatePosition(e), this.suppressCallbacks = !1, this.entranceAnimation = new Ne(
       this.elements.container,
       this.config.animateDuration,
       this.config.animateDelay,
@@ -1066,7 +1071,7 @@ class _e {
     M(this.elements.clip, this.state.position, this.config.orientation, this.getClipZoomInfo());
   }
   updatePosition(e) {
-    this.state.position = J(e), M(this.elements.clip, this.state.position, this.config.orientation, this.getClipZoomInfo()), Ee(this.elements.handle, this.state.position, this.config.orientation), Ne(this.elements.handle, this.state.position), re(
+    this.state.position = Q(e), M(this.elements.clip, this.state.position, this.config.orientation, this.getClipZoomInfo()), Ae(this.elements.handle, this.state.position, this.config.orientation), je(this.elements.handle, this.state.position), se(
       this.elements.labelBefore,
       this.elements.labelAfter,
       this.state.position,
@@ -1082,7 +1087,7 @@ class _e {
   resolveImageSrc(e) {
     if (this.config.cloudimage) {
       const t = this.elements.container.getBoundingClientRect().width || 800;
-      return Le(e, t, this.config.cloudimage);
+      return Ee(e, t, this.config.cloudimage);
     }
     return e;
   }
@@ -1090,8 +1095,8 @@ class _e {
     var i, n;
     const e = document.activeElement === this.elements.handle;
     this.elements.handle.remove();
-    const t = Q(this.config.handleStyle, this.config.orientation, this.state.position);
-    this.elements.container.appendChild(t), this.elements.handle = t, this.elements.handleGrip = t.querySelector(".ci-before-after-handle-grip"), (i = this.sliderGestures) == null || i.destroy(), this.sliderGestures = new ee(
+    const t = ee(this.config.handleStyle, this.config.orientation, this.state.position);
+    this.elements.container.appendChild(t), this.elements.handle = t, this.elements.handleGrip = t.querySelector(".ci-before-after-handle-grip"), (i = this.sliderGestures) == null || i.destroy(), this.sliderGestures = new te(
       this.elements.container,
       this.elements.handle,
       this.config.mode,
@@ -1101,7 +1106,7 @@ class _e {
         onDragStart: () => this.onDragStart(),
         onDragEnd: () => this.onDragEnd()
       }
-    ), (n = this.keyboardHandler) == null || n.destroy(), this.keyboardHandler = new le(
+    ), (n = this.keyboardHandler) == null || n.destroy(), this.keyboardHandler = new ce(
       this.elements.handle,
       this.config.orientation,
       this.config.keyboardStep,
@@ -1123,7 +1128,7 @@ class _e {
           return (r = this.zoomPan) == null ? void 0 : r.resetZoom();
         }
       }
-    ), this.zoomGestures && this.zoomPan && (this.zoomGestures.destroy(), this.zoomGestures = new te(
+    ), this.zoomGestures && this.zoomPan && (this.zoomGestures.destroy(), this.zoomGestures = new ie(
       this.elements.container,
       this.elements.handle,
       this.zoomPan,
@@ -1136,13 +1141,13 @@ class _e {
   rebuildLabels() {
     var e, t;
     if ((e = this.elements.labelBefore) == null || e.remove(), (t = this.elements.labelAfter) == null || t.remove(), this.elements.labelBefore = null, this.elements.labelAfter = null, this.config.labelsEnabled) {
-      const i = ne(
+      const i = re(
         this.config.labelBefore,
         this.config.labelAfter,
         this.config.labelPosition,
         this.config.orientation
       );
-      this.elements.labelBefore = i.before, this.elements.labelAfter = i.after, this.elements.container.append(i.before, i.after), re(i.before, i.after, this.state.position, this.config.orientation);
+      this.elements.labelBefore = i.before, this.elements.labelAfter = i.after, this.elements.container.append(i.before, i.after), se(i.before, i.after, this.state.position, this.config.orientation);
     }
   }
   rebuildZoom() {
@@ -1151,7 +1156,7 @@ class _e {
   }
   rebuildFullscreen() {
     var e;
-    (e = this.fullscreenManager) == null || e.destroy(), this.fullscreenManager = null, this.elements.container.classList.remove("ci-before-after-container--has-fullscreen"), this.config.fullscreenButton && (this.elements.container.classList.add("ci-before-after-container--has-fullscreen"), this.fullscreenManager = new ae(
+    (e = this.fullscreenManager) == null || e.destroy(), this.fullscreenManager = null, this.elements.container.classList.remove("ci-before-after-container--has-fullscreen"), this.config.fullscreenButton && (this.elements.container.classList.add("ci-before-after-container--has-fullscreen"), this.fullscreenManager = new le(
       this.elements.container,
       (t) => {
         this.state.isFullscreen = t, L(this.config.onFullscreenChange, t);
@@ -1178,7 +1183,7 @@ function L(o, ...e) {
       console.error("CIBeforeAfter: callback error:", t);
     }
 }
-function Ge(o, e) {
+function Ve(o, e) {
   if (o === e) return !0;
   if (!o || !e) return !1;
   const t = Object.keys(o), i = Object.keys(e);
@@ -1187,24 +1192,24 @@ function Ge(o, e) {
     if (o[n] !== e[n]) return !1;
   return !0;
 }
-const ce = ".ci-before-after-container{--ci-before-after-handle-width: 4px;--ci-before-after-handle-color: #ffffff;--ci-before-after-handle-shadow: 0 0 8px rgba(0, 0, 0, .3);--ci-before-after-grip-size: 44px;--ci-before-after-grip-bg: #ffffff;--ci-before-after-grip-border: 2px solid rgba(0, 0, 0, .1);--ci-before-after-grip-border-radius: 50%;--ci-before-after-grip-shadow: 0 2px 8px rgba(0, 0, 0, .2);--ci-before-after-grip-icon-color: #333333;--ci-before-after-grip-icon-size: 20px;--ci-before-after-grip-hover-bg: #f0f0f0;--ci-before-after-grip-hover-shadow: 0 4px 16px rgba(0, 0, 0, .25);--ci-before-after-grip-active-bg: #e0e0e0;--ci-before-after-grip-active-scale: .95;--ci-before-after-label-font-family: inherit;--ci-before-after-label-font-size: 14px;--ci-before-after-label-font-weight: 600;--ci-before-after-label-color: #ffffff;--ci-before-after-label-bg: rgba(0, 0, 0, .5);--ci-before-after-label-padding: 6px 14px;--ci-before-after-label-border-radius: 6px;--ci-before-after-label-offset-x: 12px;--ci-before-after-label-offset-y: 12px;--ci-before-after-label-backdrop-filter: blur(4px);--ci-before-after-handle-transition: .15s ease;--ci-before-after-slide-transition: 0ms;--ci-before-after-animate-duration: .8s;--ci-before-after-animate-easing: ease-out;--ci-before-after-zoom-controls-bg: rgba(255, 255, 255, .9);--ci-before-after-zoom-controls-color: #333333;--ci-before-after-zoom-controls-border-radius: 8px;--ci-before-after-zoom-controls-shadow: 0 2px 8px rgba(0, 0, 0, .15)}.ci-before-after-theme-dark{--ci-before-after-handle-color: #1a1a1a;--ci-before-after-handle-shadow: 0 0 8px rgba(255, 255, 255, .2);--ci-before-after-grip-bg: #1a1a1a;--ci-before-after-grip-border: 2px solid rgba(255, 255, 255, .2);--ci-before-after-grip-shadow: 0 2px 8px rgba(0, 0, 0, .5);--ci-before-after-grip-icon-color: #f0f0f0;--ci-before-after-grip-hover-bg: #2a2a2a;--ci-before-after-grip-active-bg: #333333;--ci-before-after-label-bg: rgba(0, 0, 0, .45);--ci-before-after-label-color: #f0f0f0;--ci-before-after-zoom-controls-bg: rgba(30, 30, 30, .9);--ci-before-after-zoom-controls-color: #f0f0f0}.ci-before-after-container{position:relative;overflow:hidden;width:100%;border-radius:var(--ci-before-after-border-radius, 0px);box-shadow:var(--ci-before-after-shadow, none);user-select:none;-webkit-user-select:none;touch-action:pan-y;line-height:0}.ci-before-after-container--vertical{touch-action:pan-x}.ci-before-after-container--fullscreen{background:#000;display:flex;align-items:center;justify-content:center;width:100vw;height:100vh}.ci-before-after-container--fullscreen .ci-before-after-wrapper{max-height:100vh}.ci-before-after-container--fullscreen .ci-before-after-image{object-fit:contain}.ci-before-after-container--dragging{cursor:ew-resize}.ci-before-after-container--vertical.ci-before-after-container--dragging{cursor:ns-resize}.ci-before-after-viewport{position:relative;width:100%;height:100%;transform-origin:0 0}.ci-before-after-viewport--zoomable{will-change:transform}.ci-before-after-wrapper{position:relative;width:100%;overflow:hidden}.ci-before-after-image{display:block;width:100%;height:100%;object-fit:cover}.ci-before-after-before{display:block;width:100%}.ci-before-after-after{position:absolute;top:0;left:0;width:100%;height:100%}.ci-before-after-clip{position:absolute;top:0;left:0;right:0;bottom:0}.ci-before-after-handle{position:absolute;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;transform:translate(-50%);cursor:ew-resize;outline:none}.ci-before-after-handle:focus-visible .ci-before-after-handle-grip{outline:3px solid #4d90fe;outline-offset:2px}.ci-before-after-container--vertical .ci-before-after-handle{top:auto;bottom:auto;left:0;right:0;flex-direction:row;transform:translateY(-50%);cursor:ns-resize}.ci-before-after-handle-line{flex:1;width:var(--ci-before-after-handle-width);background:var(--ci-before-after-handle-color);box-shadow:var(--ci-before-after-handle-shadow)}.ci-before-after-container--vertical .ci-before-after-handle-line{width:auto;height:var(--ci-before-after-handle-width);flex:1}.ci-before-after-handle-grip{display:flex;align-items:center;justify-content:center;width:var(--ci-before-after-grip-size);height:var(--ci-before-after-grip-size);background:var(--ci-before-after-grip-bg);border:var(--ci-before-after-grip-border);border-radius:var(--ci-before-after-grip-border-radius);box-shadow:var(--ci-before-after-grip-shadow);color:var(--ci-before-after-grip-icon-color);flex-shrink:0;transition:background .15s ease,box-shadow .15s ease,transform .15s ease}.ci-before-after-handle-grip svg{width:var(--ci-before-after-grip-icon-size);height:var(--ci-before-after-grip-icon-size)}.ci-before-after-handle-grip:hover,.ci-before-after-handle:hover .ci-before-after-handle-grip{background:var(--ci-before-after-grip-hover-bg);box-shadow:var(--ci-before-after-grip-hover-shadow);transform:scale(1.1)}.ci-before-after-container--dragging .ci-before-after-handle-grip{background:var(--ci-before-after-grip-active-bg);transform:scale(var(--ci-before-after-grip-active-scale))}.ci-before-after-handle--line .ci-before-after-handle-grip,.ci-before-after-handle--line .ci-before-after-handle-grip--pill{width:8px;height:32px;border-radius:4px}.ci-before-after-container--vertical .ci-before-after-handle--line .ci-before-after-handle-grip{width:32px;height:8px}.ci-before-after-handle--circle .ci-before-after-handle-line{display:none}.ci-before-after-label{position:absolute;z-index:5;font-family:var(--ci-before-after-label-font-family);font-size:var(--ci-before-after-label-font-size);font-weight:var(--ci-before-after-label-font-weight);color:var(--ci-before-after-label-color);background:var(--ci-before-after-label-bg);padding:var(--ci-before-after-label-padding);border-radius:var(--ci-before-after-label-border-radius);backdrop-filter:var(--ci-before-after-label-backdrop-filter);-webkit-backdrop-filter:var(--ci-before-after-label-backdrop-filter);pointer-events:none;line-height:1.2;transition:opacity .2s ease;opacity:1}.ci-before-after-label--hidden{opacity:0}.ci-before-after-container--horizontal .ci-before-after-label--top.ci-before-after-label-before{top:var(--ci-before-after-label-offset-y);left:25%;transform:translate(-50%)}.ci-before-after-container--horizontal .ci-before-after-label--top.ci-before-after-label-after{top:var(--ci-before-after-label-offset-y);left:75%;transform:translate(-50%)}.ci-before-after-container--horizontal .ci-before-after-label--bottom.ci-before-after-label-before{bottom:var(--ci-before-after-label-offset-y);left:25%;transform:translate(-50%)}.ci-before-after-container--horizontal .ci-before-after-label--bottom.ci-before-after-label-after{bottom:var(--ci-before-after-label-offset-y);left:75%;transform:translate(-50%)}.ci-before-after-container--vertical .ci-before-after-label--top.ci-before-after-label-before{top:var(--ci-before-after-label-offset-y);left:var(--ci-before-after-label-offset-x)}.ci-before-after-container--vertical .ci-before-after-label--top.ci-before-after-label-after{bottom:var(--ci-before-after-label-offset-y);left:var(--ci-before-after-label-offset-x)}.ci-before-after-container--vertical .ci-before-after-label--bottom.ci-before-after-label-before{top:var(--ci-before-after-label-offset-y);right:var(--ci-before-after-label-offset-x)}.ci-before-after-container--vertical .ci-before-after-label--bottom.ci-before-after-label-after{bottom:var(--ci-before-after-label-offset-y);right:var(--ci-before-after-label-offset-x)}.ci-before-after-container--vertical.ci-before-after-container--zoom-left .ci-before-after-label--top.ci-before-after-label-before,.ci-before-after-container--vertical.ci-before-after-container--zoom-left .ci-before-after-label--top.ci-before-after-label-after{left:calc(var(--ci-before-after-label-offset-x) + 44px)}.ci-before-after-zoom-controls{position:absolute;z-index:20;display:flex;gap:2px;background:var(--ci-before-after-zoom-controls-bg);border-radius:var(--ci-before-after-zoom-controls-border-radius);box-shadow:var(--ci-before-after-zoom-controls-shadow);padding:0;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}.ci-before-after-zoom-controls button{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:none;background:transparent;color:var(--ci-before-after-zoom-controls-color);cursor:pointer;border-radius:6px;padding:0;transition:background .15s ease}.ci-before-after-zoom-controls button:hover{background:#00000014}.ci-before-after-theme-dark .ci-before-after-zoom-controls button:hover{background:#ffffff1f}.ci-before-after-zoom-controls button:focus-visible{outline:2px solid #4d90fe;outline-offset:-2px}.ci-before-after-zoom-controls--top-left{top:12px;left:12px}.ci-before-after-zoom-controls--top-center{top:12px;left:50%;transform:translate(-50%)}.ci-before-after-zoom-controls--top-right{top:12px;right:12px}.ci-before-after-zoom-controls--bottom-left{bottom:12px;left:12px}.ci-before-after-zoom-controls--bottom-center{bottom:12px;left:50%;transform:translate(-50%)}.ci-before-after-zoom-controls--bottom-right{bottom:12px;right:12px}.ci-before-after-fullscreen-btn{position:absolute;top:12px;right:12px;z-index:20;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:none;background:var(--ci-before-after-zoom-controls-bg);color:var(--ci-before-after-zoom-controls-color);border-radius:8px;cursor:pointer;box-shadow:var(--ci-before-after-zoom-controls-shadow);padding:0;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:background .15s ease}.ci-before-after-fullscreen-btn:hover{background:#e6e6e6f2}.ci-before-after-theme-dark .ci-before-after-fullscreen-btn:hover{background:#323232f2}.ci-before-after-fullscreen-btn:focus-visible{outline:2px solid #4d90fe;outline-offset:2px}.ci-before-after-container--zoom-top-right .ci-before-after-fullscreen-btn{right:132px}.ci-before-after-container--zoom-top.ci-before-after-container--horizontal .ci-before-after-label--top{top:auto;bottom:var(--ci-before-after-label-offset-y)}.ci-before-after-scroll-hint{position:absolute;bottom:50%;left:50%;transform:translate(-50%,50%);z-index:30;background:#000000bf;color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .2s ease;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);line-height:1.4}.ci-before-after-scroll-hint--visible{opacity:1}.ci-before-after-loading .ci-before-after-wrapper{aspect-ratio:var(--ci-before-after-aspect-ratio, auto);min-height:200px;background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0,#f0f0f0 75%);background-size:200% 100%;animation:ci-before-after-shimmer 1.5s infinite}.ci-before-after-theme-dark.ci-before-after-loading .ci-before-after-wrapper{background:linear-gradient(90deg,#2a2a2a 25%,#333,#2a2a2a 75%);background-size:200% 100%}@keyframes ci-before-after-shimmer{0%{background-position:-200% 0}to{background-position:200% 0}}.ci-before-after-container--hover-mode{cursor:ew-resize}.ci-before-after-container--vertical.ci-before-after-container--hover-mode{cursor:ns-resize}.ci-before-after-container--click-mode{cursor:pointer}@media(prefers-reduced-motion:reduce){.ci-before-after-container,.ci-before-after-container *{animation:none!important;transition-duration:.01ms!important}}";
-class ge extends _e {
+const he = ".ci-before-after-container{--ci-before-after-handle-width: 4px;--ci-before-after-handle-color: #ffffff;--ci-before-after-handle-shadow: 0 0 8px rgba(0, 0, 0, .3);--ci-before-after-grip-size: 44px;--ci-before-after-grip-bg: #ffffff;--ci-before-after-grip-border: 2px solid rgba(0, 0, 0, .1);--ci-before-after-grip-border-radius: 50%;--ci-before-after-grip-shadow: 0 2px 8px rgba(0, 0, 0, .2);--ci-before-after-grip-icon-color: #333333;--ci-before-after-grip-icon-size: 20px;--ci-before-after-grip-hover-bg: #f0f0f0;--ci-before-after-grip-hover-shadow: 0 4px 16px rgba(0, 0, 0, .25);--ci-before-after-grip-active-bg: #e0e0e0;--ci-before-after-grip-active-scale: .95;--ci-before-after-label-font-family: inherit;--ci-before-after-label-font-size: 14px;--ci-before-after-label-font-weight: 600;--ci-before-after-label-color: #ffffff;--ci-before-after-label-bg: rgba(0, 0, 0, .5);--ci-before-after-label-padding: 6px 14px;--ci-before-after-label-border-radius: 6px;--ci-before-after-label-offset-x: 12px;--ci-before-after-label-offset-y: 12px;--ci-before-after-label-backdrop-filter: blur(4px);--ci-before-after-handle-transition: .15s ease;--ci-before-after-slide-transition: 0ms;--ci-before-after-animate-duration: .8s;--ci-before-after-animate-easing: ease-out;--ci-before-after-zoom-controls-bg: rgba(255, 255, 255, .9);--ci-before-after-zoom-controls-color: #333333;--ci-before-after-zoom-controls-border-radius: 8px;--ci-before-after-zoom-controls-shadow: 0 2px 8px rgba(0, 0, 0, .15)}.ci-before-after-theme-dark{--ci-before-after-handle-color: #1a1a1a;--ci-before-after-handle-shadow: 0 0 8px rgba(255, 255, 255, .2);--ci-before-after-grip-bg: #1a1a1a;--ci-before-after-grip-border: 2px solid rgba(255, 255, 255, .2);--ci-before-after-grip-shadow: 0 2px 8px rgba(0, 0, 0, .5);--ci-before-after-grip-icon-color: #f0f0f0;--ci-before-after-grip-hover-bg: #2a2a2a;--ci-before-after-grip-active-bg: #333333;--ci-before-after-label-bg: rgba(0, 0, 0, .45);--ci-before-after-label-color: #f0f0f0;--ci-before-after-zoom-controls-bg: rgba(30, 30, 30, .9);--ci-before-after-zoom-controls-color: #f0f0f0}.ci-before-after-container{position:relative;overflow:hidden;width:100%;border-radius:var(--ci-before-after-border-radius, 0px);box-shadow:var(--ci-before-after-shadow, none);user-select:none;-webkit-user-select:none;touch-action:pan-y;line-height:0}.ci-before-after-container--vertical{touch-action:pan-x}.ci-before-after-container--fullscreen{background:#000;display:flex;align-items:center;justify-content:center;width:100vw;height:100vh}.ci-before-after-container--fullscreen .ci-before-after-wrapper{max-height:100vh}.ci-before-after-container--fullscreen .ci-before-after-image{object-fit:contain}.ci-before-after-container--dragging{cursor:ew-resize}.ci-before-after-container--vertical.ci-before-after-container--dragging{cursor:ns-resize}.ci-before-after-viewport{position:relative;width:100%;height:100%;transform-origin:0 0}.ci-before-after-viewport--zoomable{will-change:transform}.ci-before-after-wrapper{position:relative;width:100%;overflow:hidden}.ci-before-after-image{display:block;width:100%;height:100%;object-fit:cover}.ci-before-after-before{display:block;width:100%}.ci-before-after-after{position:absolute;top:0;left:0;width:100%;height:100%}.ci-before-after-clip{position:absolute;top:0;left:0;right:0;bottom:0}.ci-before-after-handle{position:absolute;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;transform:translate(-50%);cursor:ew-resize;outline:none}.ci-before-after-handle:focus-visible .ci-before-after-handle-grip{outline:3px solid #4d90fe;outline-offset:2px}.ci-before-after-container--vertical .ci-before-after-handle{top:auto;bottom:auto;left:0;right:0;flex-direction:row;transform:translateY(-50%);cursor:ns-resize}.ci-before-after-handle-line{flex:1;width:var(--ci-before-after-handle-width);background:var(--ci-before-after-handle-color);box-shadow:var(--ci-before-after-handle-shadow)}.ci-before-after-container--vertical .ci-before-after-handle-line{width:auto;height:var(--ci-before-after-handle-width);flex:1}.ci-before-after-handle-grip{display:flex;align-items:center;justify-content:center;width:var(--ci-before-after-grip-size);height:var(--ci-before-after-grip-size);background:var(--ci-before-after-grip-bg);border:var(--ci-before-after-grip-border);border-radius:var(--ci-before-after-grip-border-radius);box-shadow:var(--ci-before-after-grip-shadow);color:var(--ci-before-after-grip-icon-color);flex-shrink:0;transition:background .15s ease,box-shadow .15s ease,transform .15s ease}.ci-before-after-handle-grip svg{width:var(--ci-before-after-grip-icon-size);height:var(--ci-before-after-grip-icon-size)}.ci-before-after-handle-grip:hover,.ci-before-after-handle:hover .ci-before-after-handle-grip{background:var(--ci-before-after-grip-hover-bg);box-shadow:var(--ci-before-after-grip-hover-shadow);transform:scale(1.1)}.ci-before-after-container--dragging .ci-before-after-handle-grip{background:var(--ci-before-after-grip-active-bg);transform:scale(var(--ci-before-after-grip-active-scale))}.ci-before-after-handle--line .ci-before-after-handle-grip,.ci-before-after-handle--line .ci-before-after-handle-grip--pill{width:8px;height:32px;border-radius:4px}.ci-before-after-container--vertical .ci-before-after-handle--line .ci-before-after-handle-grip{width:32px;height:8px}.ci-before-after-handle--circle .ci-before-after-handle-line{display:none}.ci-before-after-label{position:absolute;z-index:5;font-family:var(--ci-before-after-label-font-family);font-size:var(--ci-before-after-label-font-size);font-weight:var(--ci-before-after-label-font-weight);color:var(--ci-before-after-label-color);background:var(--ci-before-after-label-bg);padding:var(--ci-before-after-label-padding);border-radius:var(--ci-before-after-label-border-radius);backdrop-filter:var(--ci-before-after-label-backdrop-filter);-webkit-backdrop-filter:var(--ci-before-after-label-backdrop-filter);pointer-events:none;line-height:1.2;transition:opacity .2s ease;opacity:1}.ci-before-after-label--hidden{opacity:0}.ci-before-after-container--horizontal .ci-before-after-label--top.ci-before-after-label-before{top:var(--ci-before-after-label-offset-y);left:25%;transform:translate(-50%)}.ci-before-after-container--horizontal .ci-before-after-label--top.ci-before-after-label-after{top:var(--ci-before-after-label-offset-y);left:75%;transform:translate(-50%)}.ci-before-after-container--horizontal .ci-before-after-label--bottom.ci-before-after-label-before{bottom:var(--ci-before-after-label-offset-y);left:25%;transform:translate(-50%)}.ci-before-after-container--horizontal .ci-before-after-label--bottom.ci-before-after-label-after{bottom:var(--ci-before-after-label-offset-y);left:75%;transform:translate(-50%)}.ci-before-after-container--vertical .ci-before-after-label--top.ci-before-after-label-before{top:var(--ci-before-after-label-offset-y);left:var(--ci-before-after-label-offset-x)}.ci-before-after-container--vertical .ci-before-after-label--top.ci-before-after-label-after{bottom:var(--ci-before-after-label-offset-y);left:var(--ci-before-after-label-offset-x)}.ci-before-after-container--vertical .ci-before-after-label--bottom.ci-before-after-label-before{top:var(--ci-before-after-label-offset-y);right:var(--ci-before-after-label-offset-x)}.ci-before-after-container--vertical .ci-before-after-label--bottom.ci-before-after-label-after{bottom:var(--ci-before-after-label-offset-y);right:var(--ci-before-after-label-offset-x)}.ci-before-after-container--vertical.ci-before-after-container--zoom-left .ci-before-after-label--top.ci-before-after-label-before,.ci-before-after-container--vertical.ci-before-after-container--zoom-left .ci-before-after-label--top.ci-before-after-label-after{left:calc(var(--ci-before-after-label-offset-x) + 44px)}.ci-before-after-zoom-controls{position:absolute;z-index:20;display:flex;gap:2px;background:var(--ci-before-after-zoom-controls-bg);border-radius:var(--ci-before-after-zoom-controls-border-radius);box-shadow:var(--ci-before-after-zoom-controls-shadow);padding:0;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}.ci-before-after-zoom-controls button{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:none;background:transparent;color:var(--ci-before-after-zoom-controls-color);cursor:pointer;border-radius:6px;padding:0;transition:background .15s ease}.ci-before-after-zoom-controls button:hover{background:#00000014}.ci-before-after-theme-dark .ci-before-after-zoom-controls button:hover{background:#ffffff1f}.ci-before-after-zoom-controls button:focus-visible{outline:2px solid #4d90fe;outline-offset:-2px}.ci-before-after-zoom-controls--top-left{top:12px;left:12px}.ci-before-after-zoom-controls--top-center{top:12px;left:50%;transform:translate(-50%)}.ci-before-after-zoom-controls--top-right{top:12px;right:12px}.ci-before-after-zoom-controls--bottom-left{bottom:12px;left:12px}.ci-before-after-zoom-controls--bottom-center{bottom:12px;left:50%;transform:translate(-50%)}.ci-before-after-zoom-controls--bottom-right{bottom:12px;right:12px}.ci-before-after-fullscreen-btn{position:absolute;top:12px;right:12px;z-index:20;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:none;background:var(--ci-before-after-zoom-controls-bg);color:var(--ci-before-after-zoom-controls-color);border-radius:8px;cursor:pointer;box-shadow:var(--ci-before-after-zoom-controls-shadow);padding:0;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:background .15s ease}.ci-before-after-fullscreen-btn:hover{background:#e6e6e6f2}.ci-before-after-theme-dark .ci-before-after-fullscreen-btn:hover{background:#323232f2}.ci-before-after-fullscreen-btn:focus-visible{outline:2px solid #4d90fe;outline-offset:2px}.ci-before-after-container--zoom-top-right .ci-before-after-fullscreen-btn{right:132px}.ci-before-after-container--zoom-top.ci-before-after-container--horizontal .ci-before-after-label--top{top:auto;bottom:var(--ci-before-after-label-offset-y)}.ci-before-after-scroll-hint{position:absolute;bottom:50%;left:50%;transform:translate(-50%,50%);z-index:30;background:#000000bf;color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .2s ease;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);line-height:1.4}.ci-before-after-scroll-hint--visible{opacity:1}.ci-before-after-loading .ci-before-after-wrapper{aspect-ratio:var(--ci-before-after-aspect-ratio, auto);min-height:200px;background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0,#f0f0f0 75%);background-size:200% 100%;animation:ci-before-after-shimmer 1.5s infinite}.ci-before-after-theme-dark.ci-before-after-loading .ci-before-after-wrapper{background:linear-gradient(90deg,#2a2a2a 25%,#333,#2a2a2a 75%);background-size:200% 100%}@keyframes ci-before-after-shimmer{0%{background-position:-200% 0}to{background-position:200% 0}}.ci-before-after-container--hover-mode{cursor:ew-resize}.ci-before-after-container--vertical.ci-before-after-container--hover-mode{cursor:ns-resize}.ci-before-after-container--click-mode{cursor:pointer}@media(prefers-reduced-motion:reduce){.ci-before-after-container,.ci-before-after-container *{animation:none!important;transition-duration:.01ms!important}}";
+class pe extends Ge {
   static autoInit(e) {
     if (!S()) return [];
-    U(ce);
+    q(he);
     const i = (e || document).querySelectorAll("[data-ci-before-after-before-src]"), n = [];
     return i.forEach((r) => {
-      const s = pe(r);
-      n.push(new ge(r, s));
+      const s = ve(r);
+      n.push(new pe(r, s));
     }), n;
   }
   constructor(e, t) {
-    U(ce), super(e, t);
+    q(he), super(e, t);
   }
 }
 export {
-  ge as CIBeforeAfter,
-  _e as CIBeforeAfterCore,
-  ge as default
+  pe as CIBeforeAfter,
+  Ge as CIBeforeAfterCore,
+  pe as default
 };
 //# sourceMappingURL=js-cloudimage-before-after.esm.js.map

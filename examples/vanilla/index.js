@@ -13,4 +13,5 @@ new CIBeforeAfter('#slider', {
   theme: 'light',
   handleStyle: 'arrows',
   animate: { duration: 800 },
+  aspectRatio: '4/3',
 });

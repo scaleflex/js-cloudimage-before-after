@@ -48,6 +48,7 @@ export interface CIBeforeAfterConfig {
     onZoom?: (level: number) => void;
     onFullscreenChange?: (isFullscreen: boolean) => void;
     onReady?: () => void;
+    aspectRatio?: string;
     cloudimage?: CloudimageConfig;
 }
 export interface ResolvedConfig {
@@ -83,6 +84,7 @@ export interface ResolvedConfig {
     onZoom?: (level: number) => void;
     onFullscreenChange?: (isFullscreen: boolean) => void;
     onReady?: () => void;
+    aspectRatio?: string;
     cloudimage?: CloudimageConfig;
 }
 export interface SliderState {

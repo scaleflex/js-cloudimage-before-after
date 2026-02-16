@@ -20,7 +20,7 @@ export default function App() {
 
       <CIBeforeAfterViewer
         ref={viewerRef}
-        style={{ '--ci-before-after-aspect-ratio': '4/3' }}
+        aspectRatio="4/3"
         beforeSrc="https://scaleflex.cloudimg.io/v7/plugins/js-cloudimage-before-after/landscape-before-vG4KL646.svg?vh=c20954"
         afterSrc="https://scaleflex.cloudimg.io/v7/plugins/js-cloudimage-before-after/landscape-after-DbjDsLf5.svg?vh=6fafa4"
         beforeAlt="Living room before renovation"

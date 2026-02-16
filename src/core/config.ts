@@ -111,6 +111,7 @@ export function resolveConfig(config: CIBeforeAfterConfig): ResolvedConfig {
     onZoom: config.onZoom,
     onFullscreenChange: config.onFullscreenChange,
     onReady: config.onReady,
+    aspectRatio: config.aspectRatio,
     cloudimage: config.cloudimage,
   };
 }
@@ -240,6 +241,9 @@ export function parseDataAttributes(el: HTMLElement): CIBeforeAfterConfig {
 
   const keyboardLargeStep = getNum('keyboard-large-step');
   if (keyboardLargeStep !== undefined) config.keyboardLargeStep = keyboardLargeStep;
+
+  const aspectRatio = get('aspect-ratio');
+  if (aspectRatio !== null) config.aspectRatio = aspectRatio;
 
   const ciToken = get('ci-token');
   if (ciToken) {
