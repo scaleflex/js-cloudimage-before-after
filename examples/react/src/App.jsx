@@ -20,8 +20,8 @@ export default function App() {
 
       <CIBeforeAfterViewer
         ref={viewerRef}
-        beforeSrc="https://scaleflex.cloudimg.io/v7/demo/before-after/living-room-before.jpg"
-        afterSrc="https://scaleflex.cloudimg.io/v7/demo/before-after/living-room-after.jpg"
+        beforeSrc="https://scaleflex.cloudimg.io/v7/plugins/js-cloudimage-before-after/landscape-before-vG4KL646.svg?vh=c20954"
+        afterSrc="https://scaleflex.cloudimg.io/v7/plugins/js-cloudimage-before-after/landscape-after-DbjDsLf5.svg?vh=6fafa4"
         beforeAlt="Living room before renovation"
         afterAlt="Living room after renovation"
         labels={{ before: 'Before', after: 'After' }}
