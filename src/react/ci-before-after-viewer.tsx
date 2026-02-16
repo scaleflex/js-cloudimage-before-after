@@ -41,8 +41,8 @@ export const CIBeforeAfterViewer = forwardRef<CIBeforeAfterViewerRef, CIBeforeAf
       let cancelled = false;
       let inst: CIBeforeAfterInstance | null = null;
 
-      import('../core/ci-before-after').then(
-        ({ CIBeforeAfterCore }) => {
+      import('../index').then(
+        ({ default: CIBeforeAfter }) => {
           // BUG-04: Guard against mount/unmount race
           if (cancelled || !containerRef.current) return;
 
@@ -54,7 +54,7 @@ export const CIBeforeAfterViewer = forwardRef<CIBeforeAfterViewerRef, CIBeforeAf
             onReady,
           };
 
-          inst = new CIBeforeAfterCore(containerRef.current, config);
+          inst = new CIBeforeAfter(containerRef.current, config);
           instanceRef.current = inst;
 
           // Apply any config changes that arrived during async import
