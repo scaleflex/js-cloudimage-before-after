@@ -8,7 +8,7 @@
     "start": "vite"
   },
   "dependencies": {
-    "js-cloudimage-before-after": "^1.0.0",
+    "js-cloudimage-before-after": "^1.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
