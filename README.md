@@ -62,7 +62,7 @@ npm install js-cloudimage-before-after
 ### CDN
 
 ```html
-<script src="https://scaleflex.cloudimg.io/v7/plugins/js-cloudimage-before-after/1.0.0/js-cloudimage-before-after.min.js?vh=ad6399&func=proxy"></script>
+<script src="https://scaleflex.cloudimg.io/v7/plugins/js-cloudimage-before-after/1.0.1/js-cloudimage-before-after.min.js?vh=afd9a4&func=proxy"></script>
 ```
 
 ## Quick Start
