@@ -1,6 +1,6 @@
 {
   "name": "js-cloudimage-before-after",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Interactive before/after image comparison slider with zoom, labels, and accessibility",
   "license": "MIT",
   "author": "Scaleflex",
@@ -23,7 +23,9 @@
   "files": [
     "dist"
   ],
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
     "dev": "vite --config config/vite.demo.config.ts",
     "dev:react": "vite --config config/vite.react-demo.config.ts",
