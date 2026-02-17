@@ -239,7 +239,6 @@ kbd {
   gap: 8px;
   font-size: 13px;
   font-weight: 600;
-  text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--sf-accent);
   padding: 8px 20px;
@@ -308,6 +307,7 @@ kbd {
   align-items: center;
   gap: 10px;
   justify-content: center;
+  margin-top: 24px;
   margin-bottom: 36px;
 }
 
@@ -433,6 +433,24 @@ kbd {
 }
 
 .demo-btn--chip:active { transform: translateY(0); }
+
+/* Sandboxes in light sections */
+.demo-section--alt .demo-hero-sandboxes-label {
+  color: var(--sf-text-secondary);
+}
+
+.demo-section--alt .demo-btn--chip {
+  background: #fff;
+  color: var(--sf-text-primary);
+  border-color: var(--sf-light-border);
+  backdrop-filter: none;
+}
+
+.demo-section--alt .demo-btn--chip:hover {
+  background: var(--sf-light-bg);
+  border-color: #cbd5e1;
+  color: var(--sf-text-primary);
+}
 
 /* === Viewer === */
 .demo-viewer {
